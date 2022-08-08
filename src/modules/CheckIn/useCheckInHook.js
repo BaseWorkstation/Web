@@ -71,6 +71,8 @@ export default function useCheckInHook() {
     if (payload?.id) {
       toastSuccess("Checked in successfully!");
       setStage("SHOW_ATTENDANT");
+      // Save access token of newly checked-in user to localStorage
+      localStorage.setItem("base_acccess_token", payload?.token);
     } else {
       console.log(error);
       toastError(null, error);
