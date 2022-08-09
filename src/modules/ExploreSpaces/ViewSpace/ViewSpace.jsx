@@ -24,7 +24,11 @@ export default function ViewSpace() {
   const { currentCheckIn, currentSpace, spaceServices, spaceReviews } =
     useViewSpaceHook();
 
-  if (!currentSpace || !spaceServices)
+  if (
+    !currentSpace ||
+    !spaceServices ||
+    spaceReviews?.total_no_of_ratings === undefined
+  )
     return (
       <Center w="full" minH="100vh">
         <Spinner />
