@@ -35,7 +35,7 @@ export default function ChooseService({
           columnGap={5}
           rowGap={8}
         >
-          {workspaceServices.map(({ id, name, price_per_minute }) => {
+          {workspaceServices.map(({ id, name, price_per_minute, images }) => {
             const isSelected = selectedService === id;
 
             return (
@@ -53,7 +53,7 @@ export default function ChooseService({
                     w="full"
                     h={91}
                     rounded={8}
-                    src="/images/space.png"
+                    src={images?.[0]?.file_path || "/images/spaceholder.png"}
                   />
                   <Box pl={2} pb={2}>
                     <Text
