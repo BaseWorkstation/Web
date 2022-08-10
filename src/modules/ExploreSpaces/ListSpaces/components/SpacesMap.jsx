@@ -48,7 +48,7 @@ function Map({ spaces, selectedSpace, setSelectedSpace }) {
               h={120}
               borderRadius={12}
               objectFit="cover"
-              src={selectedSpace.logo || "/images/spaceholder.png"}
+              src={selectedSpace.logo?.file_path || "/images/spaceholder.png"}
             />
 
             <Button

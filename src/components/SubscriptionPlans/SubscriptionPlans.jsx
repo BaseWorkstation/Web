@@ -13,7 +13,10 @@ import { useEffect, useState } from "react";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchPaymentPlans } from "redux/slices/paymentSlice";
+import {
+  fetchPaymentPlans,
+  fetchPaymentReference,
+} from "redux/slices/paymentSlice";
 import theme from "theme";
 import { kConvert, toastError } from "utils/helpers";
 import {

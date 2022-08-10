@@ -156,7 +156,7 @@ export default function Hero({ currentSpace, spaceServices }) {
                 color="gray.600"
                 fontWeight={500}
               >
-                {currentSpace.street} {currentSpace.city}, {currentSpace.state}
+                {currentSpace.street}, {currentSpace.city}, {currentSpace.state}
               </Text>
               <HStack spacing={1}>
                 <Circle size={1.5} bg={isOpen ? "green.400" : "red.600"} />

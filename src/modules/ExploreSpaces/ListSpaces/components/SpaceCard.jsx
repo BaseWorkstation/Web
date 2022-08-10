@@ -43,7 +43,7 @@ export default function SpaceCard({ space }) {
           rounded={["xl", "xl", "2xl"]}
           bgRepeat="no-repeat"
           bgPos="center"
-          bgImage={logo || "/images/spaceholder.png"}
+          bgImage={`url(${logo?.file_path || "/images/spaceholder.png"})`}
         />
         <Stack justify="center" py={[3, 3, 3, 0]} pr={2}>
           <Text fontSize={["md", "md", "lg"]} color="primary.900">

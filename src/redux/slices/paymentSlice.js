@@ -42,6 +42,26 @@ export const fetchPaymentPlans = createAsyncThunk(
   }
 );
 
+export const fetchPaymentReference = createAsyncThunk(
+  "payments/fetchPaymentReference",
+  async (fetchPayload, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await Axios.get(`${BASE_API_URL}/payment/reference`, {
+        params: fetchPayload,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("base_acccess_token")}`,
+        },
+      });
+      return data;
+    } catch ({ response }) {
+      console.log(response);
+      return thunkAPI.rejectWithValue({ error: response.data });
+    }
+  }
+);
+
 export const fetchPaymentMethods = createAsyncThunk(
   "payments/fetchPaymentMethods",
   async (fetchPayload, thunkAPI) => {
@@ -203,6 +223,26 @@ const paymentSlice = createSlice({
       delete state.error;
     },
     [fetchPaymentPlans.rejected]: (state, { payload }) => {
+      state.error = {
+        errorType: "FETCH_PAYMENT_PLANS",
+        errorMessage: payload?.error,
+      };
+      delete state.loading;
+    },
+
+    [fetchPaymentReference.pending]: (state) => {
+      // state.paymentReference = [];
+      delete state.error;
+      delete state.success;
+      state.loading = "FETCH_PAYMENT_PLANS";
+    },
+    [fetchPaymentReference.fulfilled]: (state, action) => {
+      state.success = "FETCH_PAYMENT_PLANS";
+      // state.paymentReference = action.payload;
+      delete state.loading;
+      delete state.error;
+    },
+    [fetchPaymentReference.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_PAYMENT_PLANS",
         errorMessage: payload?.error,
