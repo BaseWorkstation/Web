@@ -15,13 +15,21 @@ import { IoIosCheckmarkCircle } from "react-icons/io";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPaymentPlans } from "redux/slices/paymentSlice";
 import theme from "theme";
-import { kConvert } from "utils/helpers";
+import { kConvert, toastError } from "utils/helpers";
+import {
+  usePaystackPayment,
+  PaystackButton,
+  PaystackConsumer,
+} from "react-paystack";
 
 const ctaColors = ["primary.500", "#9747FF", "gray.800"]; // Used for mapping bgColors to the CTA buttons
 
 export default function SubscriptionPlans({ currentPlanId, onSelect }) {
-  const [selectedPlanId, setSelectedPlanId] = useState(null);
   const { paymentPlans, loading } = useSelector((state) => state.payments);
+  const { userDetails } = useSelector((state) => state.user);
+  const [selectedPlanId, setSelectedPlanId] = useState(null);
+  const [amount, setAmount] = useState("");
+  const [reference, setReference] = useState("");
 
   const dispatch = useDispatch();
 
@@ -31,6 +39,41 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
       dispatch(fetchPaymentPlans());
     }
   }, []);
+
+  const config = {
+    reference,
+    email: userDetails?.email,
+    amount: amount * 100,
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+    firstname: userDetails?.first_name,
+    lastname: userDetails?.last_name,
+  };
+  const initializePayment = usePaystackPayment(config);
+
+  const onSuccess = (reference) => {
+    onSelect(selectedPlanId);
+    setReference("");
+  };
+
+  const onClosed = () => {
+    setReference("");
+  };
+
+  useEffect(() => {
+    if (reference) {
+      initializePayment(onSuccess, onClosed);
+    }
+  }, [reference]);
+
+  const openPaymentWindow = async (id) => {
+    const { payload, error } = await dispatch(fetchPaymentReference());
+
+    if (payload?.id) {
+      setReference(payload.reference);
+    } else {
+      toastError(null, error);
+    }
+  };
 
   const isLoading = loading === "ADD_PAYMENT_METHOD";
 
@@ -93,8 +136,9 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
                   size="lg"
                   h="56px"
                   onClick={() => {
+                    setAmount(price_per_month);
                     setSelectedPlanId(id);
-                    onSelect(id);
+                    openPaymentWindow(id);
                   }}
                 >
                   {isCurrent ? "Currently Active" : "Select Plan"}
