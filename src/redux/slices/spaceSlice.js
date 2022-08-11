@@ -360,7 +360,7 @@ const spaceSlice = createSlice({
     },
     [checkInToSpace.fulfilled]: (state, action) => {
       state.success = "CHECK_IN_TO_SPACE";
-      state.currentCheckIn = action.payload.workspace;
+      state.currentCheckIn = action.payload.workstation;
       delete state.loading;
       delete state.error;
     },

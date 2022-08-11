@@ -11,6 +11,7 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useSelector } from "react-redux";
 
 export default function ConfirmPin({
   workspace,
@@ -18,6 +19,8 @@ export default function ConfirmPin({
   setPin,
   handleSubmitPin,
 }) {
+  const { loading } = useSelector((state) => state.user);
+
   return (
     <Stack divider={<StackDivider />} pb={6} spacing={0}>
       <Stack color="blue.800" pb={4} px={6}>
@@ -63,6 +66,8 @@ export default function ConfirmPin({
           colorScheme="primary"
           fontWeight={500}
           w={250}
+          isLoading={loading === "FETCH_USER_BY_PIN"}
+          loadingText="Checking..."
           h={57}
           type="submit"
         >

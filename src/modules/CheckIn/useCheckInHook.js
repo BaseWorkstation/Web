@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkInToSpace, fetchSpaceServices } from "redux/slices/spaceSlice";
 import { fetchUserByPin } from "redux/slices/userSlice";
@@ -12,16 +13,22 @@ export default function useCheckInHook() {
     (state) => state.spaces
   );
 
+  const { query } = useRouter();
   const dispatch = useDispatch();
 
   const getWorkspaceDetailsFromUrl = (url) => {
-    const { searchParams } = new URL(url);
-    const workspaceId = searchParams.get("workstation_id");
-    const workspaceName = searchParams.get("workstation_name");
+    try {
+      const { searchParams } = new URL(url);
+      const workspaceId = searchParams.get("workstation_id");
+      const workspaceName = searchParams.get("workstation_name");
 
-    if (!workspaceId || !workspaceName) return null;
+      if (!workspaceId || !workspaceName) return null;
 
-    return { id: workspaceId, name: workspaceName };
+      return { id: workspaceId, name: workspaceName };
+    } catch (error) {
+      console.log(error);
+      return null;
+    }
   };
 
   const fetchWorkspaceServices = (workspace) => {
@@ -42,6 +49,10 @@ export default function useCheckInHook() {
       console.log(error);
     }
   };
+
+  useEffect(() => {
+    handleScanResult({ text: window.location.href });
+  }, []);
 
   const handleSubmitPin = async (event) => {
     event.preventDefault();

@@ -190,17 +190,17 @@ const userSlice = createSlice({
     [fetchUserByPin.pending]: (state) => {
       delete state.error;
       delete state.success;
-      state.loading = "FETCH_USER_DETAILS";
+      state.loading = "FETCH_USER_BY_PIN";
     },
     [fetchUserByPin.fulfilled]: (state, action) => {
-      state.success = "FETCH_USER_DETAILS";
+      state.success = "FETCH_USER_BY_PIN";
       state.userDetails = action.payload;
       delete state.loading;
       delete state.error;
     },
     [fetchUserByPin.rejected]: (state, { payload }) => {
       state.error = {
-        errorType: "FETCH_USER_DETAILS",
+        errorType: "FETCH_USER_BY_PIN",
         errorMessage: payload?.error,
       };
       delete state.loading;
