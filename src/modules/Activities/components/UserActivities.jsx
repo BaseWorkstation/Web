@@ -11,9 +11,9 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Spinner from "components/Spinner/Spinner";
-import Moment from "react-moment"
-import "moment-timezone"
-import {separateWithComma} from "utils/helpers"
+import Moment from "react-moment";
+import "moment-timezone";
+import { separateWithComma } from "utils/helpers";
 
 export default function UserActivities({ userActivities, userLoading }) {
   if (userLoading) return <Spinner />;
@@ -56,8 +56,15 @@ export default function UserActivities({ userActivities, userLoading }) {
             </Tr>
           </Thead>
           <Tbody>
-            {userActivities.data.map(({ id, workstation, check_in_time,check_out_time,  total_value_of_minutes_spent_in_naira}) => (
-              <Tr key={id}>
+            {userActivities.data.map(
+              ({
+                id,
+                workstation,
+                check_in_time,
+                check_out_time,
+                total_value_of_minutes_spent_in_naira,
+              }) => (
+                <Tr key={id}>
                   <Td textTransform="capitalize" py={8}>
                     {workstation.name}
                   </Td>
@@ -83,11 +90,12 @@ export default function UserActivities({ userActivities, userLoading }) {
                     N{separateWithComma(total_value_of_minutes_spent_in_naira)}
                   </Td>
                 </Tr>
-            ))}
+              )
+            )}
           </Tbody>
         </Table>
       </TableContainer>
-     {/* <HStack spacing={16} pt={12} justify="flex-end">
+      {/* <HStack spacing={16} pt={12} justify="flex-end">
         <Text fontWeight="bold" color="primary.500" fontSize="lg">
           TOTAL SPENT
         </Text>
