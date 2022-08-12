@@ -4,7 +4,6 @@ import {
   Flex,
   Heading,
   HStack,
-  Link,
   Modal,
   ModalBody,
   ModalContent,
@@ -13,13 +12,15 @@ import {
   useDisclosure,
   VStack,
 } from "@chakra-ui/react";
+import Link from "next/link";
 import { useSelector } from "react-redux";
 
 export default function CheckInStatus() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentCheckIn, loading } = useSelector((state) => state.spaces);
+  const { userDetails } = useSelector((state) => state.user);
 
-  if (!currentCheckIn) return null;
+  if (!currentCheckIn || userDetails?.check_in_status) return null;
 
   return (
     <>
@@ -34,15 +35,11 @@ export default function CheckInStatus() {
                 fontSize={20}
                 textAlign="center"
               >
-                You're about to checkout from Venia Business Hub
+                You're about to checkout from {currentCheckIn.name}
               </Text>
             </VStack>
             <Divider borderColor="gray.400" />
             <VStack px={4} pt={10} spacing={12}>
-              <Heading fontSize={48} color="primary.500" fontWeight={500}>
-                01:00:35
-              </Heading>
-
               <Link href="/check-out">
                 <Button
                   w={250}
@@ -84,7 +81,7 @@ export default function CheckInStatus() {
             colorScheme="default"
             bg="red.300"
           >
-            01:00:35 &nbsp; Check out
+            Check out
           </Button>
         </Flex>
       </HStack>

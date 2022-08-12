@@ -54,7 +54,7 @@ export default function ShowAttendant() {
           colorScheme="primary"
           fontWeight={500}
           w={250}
-          onClick={() => Router.back()}
+          onClick={() => Router.push("/")}
           h={57}
           type="submit"
         >

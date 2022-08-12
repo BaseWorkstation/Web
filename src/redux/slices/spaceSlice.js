@@ -150,17 +150,13 @@ export const checkOutOfSpace = createAsyncThunk(
   "spaces/checkOutOfSpace",
   async (createPayload, thunkAPI) => {
     try {
-      const { data } = await Axios.post(
-        `${BASE_API_URL}/visits/check-in`,
-        createPayload,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem(
-              "base_acccess_token"
-            )}`,
-          },
-        }
-      );
+      const {
+        data: { data },
+      } = await Axios.post(`${BASE_API_URL}/visits/check-out`, createPayload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("base_acccess_token")}`,
+        },
+      });
       return data;
     } catch ({ response }) {
       console.log(response);
@@ -367,6 +363,25 @@ const spaceSlice = createSlice({
     [checkInToSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CHECK_IN_TO_SPACE",
+        errorMessage: payload?.error,
+      };
+      delete state.loading;
+    },
+
+    [checkOutOfSpace.pending]: (state) => {
+      delete state.error;
+      delete state.success;
+      state.loading = "CHECK_OUT_OF_SPACE";
+    },
+    [checkOutOfSpace.fulfilled]: (state, action) => {
+      state.success = "CHECK_OUT_OF_SPACE";
+      state.currentCheckIn = null;
+      delete state.loading;
+      delete state.error;
+    },
+    [checkOutOfSpace.rejected]: (state, { payload }) => {
+      state.error = {
+        errorType: "CHECK_OUT_OF_SPACE",
         errorMessage: payload?.error,
       };
       delete state.loading;
