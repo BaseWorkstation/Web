@@ -17,31 +17,35 @@ export default function AboutBase({ about, schedule, policies }) {
             Schedule:
           </Heading>
           <Stack spacing={[4, 4, 8]} direction={["column", "column", "row"]}>
-            <Center bg="blue.800" rounded={20} w={242} h={53}>
-              <Text textAlign="center" fontWeight={500} color="white">
-                Weekdays:{" "}
-                {moment(schedule?.weekdays?.open_time, "hh:mm:ss").format(
-                  "hh:mm A"
-                )}{" "}
-                to{" "}
-                {moment(schedule?.weekdays?.close_time, "hh:mm:ss").format(
-                  "hh:mm A"
-                )}
-              </Text>
-            </Center>
+            {schedule?.weekdays?.open_time && schedule?.weekdays?.close_time && (
+              <Center bg="blue.800" rounded={20} w={242} h={53}>
+                <Text textAlign="center" fontWeight={500} color="white">
+                  Weekdays:{" "}
+                  {moment(schedule?.weekdays?.open_time, "hh:mm:ss").format(
+                    "hh:mm A"
+                  )}{" "}
+                  to{" "}
+                  {moment(schedule?.weekdays?.close_time, "hh:mm:ss").format(
+                    "hh:mm A"
+                  )}
+                </Text>
+              </Center>
+            )}
 
-            <Center bg="blue.800" rounded={20} w={242} h={53}>
-              <Text textAlign="center" fontWeight={500} color="white">
-                Weekdays:{" "}
-                {moment(schedule?.weekends?.open_time, "hh:mm:ss").format(
-                  "hh:mm A"
-                )}{" "}
-                to{" "}
-                {moment(schedule?.weekends?.close_time, "hh:mm:ss").format(
-                  "hh:mm A"
-                )}
-              </Text>
-            </Center>
+            {schedule?.weekends?.open_time && schedule?.weekends?.close_time && (
+              <Center bg="blue.800" rounded={20} w={242} h={53}>
+                <Text textAlign="center" fontWeight={500} color="white">
+                  Weekends:{" "}
+                  {moment(schedule?.weekends?.open_time, "hh:mm:ss").format(
+                    "hh:mm A"
+                  )}{" "}
+                  to{" "}
+                  {moment(schedule?.weekends?.close_time, "hh:mm:ss").format(
+                    "hh:mm A"
+                  )}
+                </Text>
+              </Center>
+            )}
           </Stack>
         </Stack>
       )}
