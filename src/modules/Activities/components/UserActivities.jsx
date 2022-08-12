@@ -13,7 +13,7 @@ import {
 import Spinner from "components/Spinner/Spinner";
 import Moment from "react-moment"
 import "moment-timezone"
-import separateWithComma from "utils/helpers"
+import {separateWithComma} from "utils/helpers"
 
 export default function UserActivities({ userActivities, userLoading }) {
   if (userLoading) return <Spinner />;
