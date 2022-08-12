@@ -11,6 +11,9 @@ import {
   Tr,
 } from "@chakra-ui/react";
 import Spinner from "components/Spinner/Spinner";
+import Moment from "react-moment"
+import "moment-timezone"
+import separateWithComma from "utilities/helpers"
 
 export default function UserActivities({ userActivities, userLoading }) {
   if (userLoading) return <Spinner />;
@@ -53,29 +56,45 @@ export default function UserActivities({ userActivities, userLoading }) {
             </Tr>
           </Thead>
           <Tbody>
-            {userActivities.data.map(({ id, workstation }) => (
+            {userActivities.data.map(({ id, workstation, check_in_time,check_out_time,  total_value_of_minutes_spent_in_naira}) => (
               <Tr key={id}>
-                <Td py={8} pl={0}>
-                  {workstation.name}
-                </Td>
-                <Td py={8}>09:00 am</Td>
-                <Td py={8}>05:00pm</Td>
-                <Td py={8} isNumeric>
-                  N2.500
-                </Td>
-              </Tr>
+                  <Td textTransform="capitalize" py={8}>
+                    {workstation.name}
+                  </Td>
+                  <Td py={8}>
+                    {check_in_time ? (
+                      <Moment format="hh:mm a">
+                        {new Date(check_in_time)}
+                      </Moment>
+                    ) : (
+                      ""
+                    )}
+                  </Td>
+                  <Td py={8}>
+                    {check_out_time ? (
+                      <Moment format="hh:mm a">
+                        {new Date(check_out_time)}
+                      </Moment>
+                    ) : (
+                      ""
+                    )}
+                  </Td>
+                  <Td py={8} isNumeric>
+                    N{separateWithComma(total_value_of_minutes_spent_in_naira)}
+                  </Td>
+                </Tr>
             ))}
           </Tbody>
         </Table>
       </TableContainer>
-      <HStack spacing={16} pt={12} justify="flex-end">
+     {/* <HStack spacing={16} pt={12} justify="flex-end">
         <Text fontWeight="bold" color="primary.500" fontSize="lg">
           TOTAL SPENT
         </Text>
         <Text fontWeight="bold" color="primary.500" fontSize="lg">
           N10,000
         </Text>
-      </HStack>
+      </HStack> */}
     </Box>
   );
 }
