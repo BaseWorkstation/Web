@@ -83,10 +83,10 @@ export default function useCheckOutHook() {
     event.preventDefault();
 
     let apiPayload = {
-      // user_id: userDetails?.id,
-      // unique_pin: pin,
-      user_id: 1,
-      unique_pin: "2049",
+       user_id: userDetails?.id,
+       unique_pin: pin,
+     // user_id: 1,
+     // unique_pin: "2049",
     };
 
     if (method === "PAYG_cash") {
