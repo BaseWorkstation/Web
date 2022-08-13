@@ -21,7 +21,7 @@ import SpaceOnMap from "./components/SpaceOnMap";
 import useViewSpaceHook from "./useViewSpaceHook";
 
 export default function ViewSpace() {
-  const { currentCheckIn, currentSpace, spaceServices, spaceReviews } =
+  const { isAlreadyCheckedIn, currentSpace, spaceServices, spaceReviews } =
     useViewSpaceHook();
 
   if (
@@ -87,7 +87,7 @@ export default function ViewSpace() {
         </Stack>
 
         <Show below="md">
-          {!currentCheckIn && (
+          {!isAlreadyCheckedIn && (
             <HStack pos="fixed" bottom={28} left={0} w="full" justify="center">
               <Flex w="fit-content">
                 <Link href="/check-in">

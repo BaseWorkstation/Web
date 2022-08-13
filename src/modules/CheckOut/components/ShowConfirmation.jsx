@@ -1,12 +1,5 @@
 import {
-  Avatar,
-  AvatarBadge,
-  Box,
   Button,
-  Grid,
-  GridItem,
-  Heading,
-  Icon,
   Image,
   Link,
   Stack,
@@ -14,9 +7,6 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import Router from "next/router";
-import { BsCheck2 } from "react-icons/bs";
-import { useSelector } from "react-redux";
 
 export default function ShowConfirmation() {
   return (
@@ -35,7 +25,6 @@ export default function ShowConfirmation() {
             colorScheme="primary"
             fontWeight={500}
             w={250}
-            // onClick={() => Router.back()}
             h={57}
             type="submit"
           >

@@ -20,7 +20,7 @@ export default function CheckInStatus() {
   const { currentCheckIn, loading } = useSelector((state) => state.spaces);
   const { userDetails } = useSelector((state) => state.user);
 
-  if (!currentCheckIn && !userDetails?.check_in_status) return null;
+  if (!userDetails?.check_in_status) return null;
 
   return (
     <>

@@ -10,6 +10,7 @@ import {
 export default function useViewSpaceHook() {
   const { currentCheckIn, currentSpace, spaceServices, spaceReviews, loading } =
     useSelector((state) => state.spaces);
+  const { userDetails } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const { query } = useRouter();
 
@@ -25,7 +26,7 @@ export default function useViewSpaceHook() {
     currentCheckIn,
     currentSpace,
     isLoading: loading === "VIEW_SPACE",
-    spaceServices,
+    isAlreadyCheckedIn: userDetails?.check_in_status,
     spaceReviews,
   };
 }

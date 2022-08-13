@@ -8,12 +8,12 @@ import {
   Heading,
   Icon,
   Image,
+  Link,
   Stack,
   StackDivider,
   Text,
   VStack,
 } from "@chakra-ui/react";
-import Router from "next/router";
 import { BsCheck2 } from "react-icons/bs";
 import { useSelector } from "react-redux";
 
@@ -49,17 +49,18 @@ export default function ShowAttendant() {
             start working
           </Text>
         </VStack>
-        <Button
-          size="lg"
-          colorScheme="primary"
-          fontWeight={500}
-          w={250}
-          onClick={() => Router.push("/")}
-          h={57}
-          type="submit"
-        >
-          Done
-        </Button>
+        <Link href="/">
+          <Button
+            size="lg"
+            colorScheme="primary"
+            fontWeight={500}
+            w={250}
+            h={57}
+            type="submit"
+          >
+            Done
+          </Button>
+        </Link>
       </VStack>
     </Stack>
   );
