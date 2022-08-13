@@ -20,7 +20,7 @@ export default function CheckInStatus() {
   const { currentCheckIn, loading } = useSelector((state) => state.spaces);
   const { userDetails } = useSelector((state) => state.user);
 
-  if (!currentCheckIn || !userDetails?.check_in_status) return null;
+  if (!currentCheckIn && !userDetails?.check_in_status) return null;
 
   return (
     <>
@@ -35,7 +35,7 @@ export default function CheckInStatus() {
                 fontSize={20}
                 textAlign="center"
               >
-                You're about to checkout from {currentCheckIn.name}
+                You're about to checkout
               </Text>
             </VStack>
             <Divider borderColor="gray.400" />
