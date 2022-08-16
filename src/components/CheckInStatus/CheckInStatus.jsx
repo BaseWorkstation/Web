@@ -13,12 +13,23 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCurrentCheckIn } from "redux/slices/spaceSlice";
 
 export default function CheckInStatus() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { currentCheckIn, loading } = useSelector((state) => state.spaces);
   const { userDetails } = useSelector((state) => state.user);
+  const dispatch = useDispatch();
+
+  // If there's a check in associated with the user, but the check-in data has not been fetched,
+  // Then fetch the current check-in details
+  useEffect(() => {
+    if (userDetails?.check_in_status && !currentCheckIn) {
+      dispatch(fetchCurrentCheckIn());
+    }
+  }, []);
 
   if (!userDetails?.check_in_status) return null;
 

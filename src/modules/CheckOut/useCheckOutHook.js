@@ -1,9 +1,12 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
+import { usePaystackPayment } from "react-paystack";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchPaymentReference } from "redux/slices/paymentSlice";
 import {
   checkInToSpace,
   checkOutOfSpace,
+  fetchCurrentCheckIn,
   fetchSpaceServices,
 } from "redux/slices/spaceSlice";
 import { fetchTeams } from "redux/slices/teamSlice";
@@ -22,16 +25,53 @@ export default function useCheckOutHook() {
     loading,
   } = useSelector((state) => state.spaces);
   const { userDetails } = useSelector((state) => state.user);
+  const [amount, setAmount] = useState("");
+  const [reference, setReference] = useState("");
 
-  const { query } = useRouter();
+  const config = {
+    reference,
+    email: userDetails?.email,
+    amount: amount * 100,
+    publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
+    firstname: userDetails?.first_name,
+    lastname: userDetails?.last_name,
+  };
+  const initializePayment = usePaystackPayment(config);
+
   const dispatch = useDispatch();
   const currentTeam = teams[0];
+
+  const onSuccess = (reference) => {
+    savePayment(reference);
+    setReference("");
+  };
+
+  const onClosed = () => {
+    setReference("");
+  };
+
+  useEffect(() => {
+    if (reference) {
+      initializePayment(onSuccess, onClosed);
+    }
+  }, [reference]);
 
   useEffect(() => {
     if (!teams.length) {
       dispatch(fetchTeams());
     }
+    if (userDetails?.check_in_status) {
+      handleFetchCheckIn();
+    }
   }, []);
+
+  const handleFetchCheckIn = async () => {
+    const { payload, error } = await dispatch(fetchCurrentCheckIn());
+
+    if (payload.id) {
+      setWorkspace(payload?.workstation);
+    }
+  };
 
   const currentUserPlan = userDetails?.payment_methods?.find(
     ({ method }) => method === "plan"
@@ -41,52 +81,32 @@ export default function useCheckOutHook() {
     ({ method }) => method === "plan"
   )?.plan;
 
-  const getWorkspaceDetailsFromUrl = (url) => {
-    try {
-      const { searchParams } = new URL(url);
-      const workspaceId = searchParams.get("workstation_id");
-      const workspaceName = searchParams.get("workstation_name");
-
-      if (!workspaceId || !workspaceName) return null;
-
-      return { id: workspaceId, name: workspaceName };
-    } catch (error) {
-      console.log(error);
-      return null;
-    }
-  };
-
-  const fetchWorkspaceServices = (workspace) => {
-    dispatch(fetchSpaceServices({ workstation_id: workspace.id }));
-  };
-
-  const handleScanResult = (result, error) => {
-    if (!!result) {
-      const workspace = getWorkspaceDetailsFromUrl(result?.text);
-
-      if (workspace) {
-        setWorkspace(workspace);
-        fetchWorkspaceServices(workspace);
-        setStage("CONFIRM_PIN");
-      }
-    }
-    if (!!error) {
-      console.log(error);
-    }
-  };
-
   const handleSubmitMethod = async () => {
     setStage("CONFIRM_PIN");
   };
 
+  const openPaymentWindow = async (id) => {
+    const { payload, error } = await dispatch(fetchPaymentReference());
+
+    if (payload?.id) {
+      setReference(payload.reference);
+    } else {
+      toastError(null, error);
+    }
+  };
+
   const handleSubmitPin = async (event) => {
     event.preventDefault();
+    if (method === "PAYG_cash") {
+      openPaymentWindow();
+    } else {
+    }
+  };
 
+  const savePayment = async (reference) => {
     let apiPayload = {
-       user_id: userDetails?.id,
-       unique_pin: pin,
-     // user_id: 1,
-     // unique_pin: "2049",
+      user_id: userDetails?.id,
+      unique_pin: pin,
     };
 
     if (method === "PAYG_cash") {
@@ -126,7 +146,6 @@ export default function useCheckOutHook() {
 
   return {
     stage,
-    handleScanResult,
     workspace,
     currentCheckIn,
     currentUserPlan,
@@ -138,6 +157,7 @@ export default function useCheckOutHook() {
     handleSubmitMethod,
     workspaceServices,
     handleSubmitPin,
+    isCheckedIn: userDetails?.check_in_status,
     isCheckingOut: loading === "CHECK_OUT_OF_SPACE",
   };
 }

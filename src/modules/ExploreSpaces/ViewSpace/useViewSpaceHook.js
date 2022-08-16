@@ -28,5 +28,6 @@ export default function useViewSpaceHook() {
     isLoading: loading === "VIEW_SPACE",
     isAlreadyCheckedIn: userDetails?.check_in_status,
     spaceReviews,
+    spaceServices,
   };
 }

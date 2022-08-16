@@ -146,6 +146,26 @@ export const checkInToSpace = createAsyncThunk(
   }
 );
 
+export const fetchCurrentCheckIn = createAsyncThunk(
+  "spaces/fetchCurrentCheckIn",
+  async (fetchPayload, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await Axios.get(`${BASE_API_URL}/visits/1`, {
+        params: fetchPayload,
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("base_acccess_token")}`,
+        },
+      });
+      return data;
+    } catch ({ response }) {
+      console.log(response);
+      return thunkAPI.rejectWithValue({ error: response.data });
+    }
+  }
+);
+
 export const checkOutOfSpace = createAsyncThunk(
   "spaces/checkOutOfSpace",
   async (createPayload, thunkAPI) => {
@@ -363,6 +383,26 @@ const spaceSlice = createSlice({
     [checkInToSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CHECK_IN_TO_SPACE",
+        errorMessage: payload?.error,
+      };
+      delete state.loading;
+    },
+
+    [fetchCurrentCheckIn.pending]: (state) => {
+      state.currentCheckIn = null;
+      delete state.error;
+      delete state.success;
+      state.loading = "FETCH_CURRENT_CHECK_IN";
+    },
+    [fetchCurrentCheckIn.fulfilled]: (state, action) => {
+      state.success = "FETCH_CURRENT_CHECK_IN";
+      state.currentCheckIn = action.payload;
+      delete state.loading;
+      delete state.error;
+    },
+    [fetchCurrentCheckIn.rejected]: (state, { payload }) => {
+      state.error = {
+        errorType: "FETCH_CURRENT_CHECK_IN",
         errorMessage: payload?.error,
       };
       delete state.loading;

@@ -1,5 +1,6 @@
-import { Center, Stack, VStack } from "@chakra-ui/react";
+import { Button, Center, Stack, Text, VStack } from "@chakra-ui/react";
 import { Logo } from "components/Logo";
+import Link from "next/link";
 import ChooseService from "./components/ChooseService";
 import ConfirmPin from "./components/ConfirmPin";
 import ShowConfirmation from "./components/ShowConfirmation";
@@ -20,8 +21,21 @@ export default function CheckIn() {
     handleSubmitMethod,
     handleSubmitPin,
     workspaceServices,
+    isCheckedIn,
     isCheckingOut,
   } = useCheckOutHook();
+
+  if (!isCheckedIn)
+    return (
+      <Center flexDir="column" minH="100vh">
+        <Text mb={4}>You are currently not checked in to any space</Text>
+        <Link href="/check-in">
+          <Button size="lg" colorScheme="primary">
+            Check in now
+          </Button>
+        </Link>
+      </Center>
+    );
 
   return (
     <Center bg="gray.50" minH="100vh" py={[16, 20]}>
