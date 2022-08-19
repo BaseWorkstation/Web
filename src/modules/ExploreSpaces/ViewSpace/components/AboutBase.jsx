@@ -1,7 +1,25 @@
-import { Center, Heading, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  Flex,
+  Heading,
+  Link,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import moment from "moment";
 
-export default function AboutBase({ about, schedule, policies }) {
+export default function AboutBase({
+  name,
+  about,
+  schedule,
+  policies,
+  coordinates,
+}) {
+  const [lat, lng] = coordinates.split(", ").map((str) => {
+    return Number(str);
+  });
+
   return (
     <Stack spacing={6} rounded={20} px={[5, 8]} pt={8} pb={20} bg="white">
       <Stack spacing={4}>
@@ -57,6 +75,18 @@ export default function AboutBase({ about, schedule, policies }) {
 
         <Text as="span" dangerouslySetInnerHTML={{ __html: policies }} />
       </Stack>
+
+      <Flex pt={6} spacing={4}>
+        <Link
+          textDecoration="none !important"
+          isExternal
+          href={`http://www.google.com/maps/place/${name}/@${lat},${lng}`}
+        >
+          <Button h={57} w={220} colorScheme="primary" size="lg">
+            View Directions
+          </Button>
+        </Link>
+      </Flex>
     </Stack>
   );
 }

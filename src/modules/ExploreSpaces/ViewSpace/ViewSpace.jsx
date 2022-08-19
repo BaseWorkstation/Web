@@ -61,9 +61,11 @@ export default function ViewSpace() {
             <Stack w="full" spacing={[6, 6, 12]}>
               <Amenities amenities={currentSpace.amenities} />
               <AboutBase
+                name={currentSpace.name}
                 about={currentSpace.about}
                 schedule={currentSpace.schedule}
                 policies={currentSpace.other_policies}
+                coordinates={currentSpace.coordinates}
               />
             </Stack>
             <Stack w="full" rounded={20} bg="white" spacing={8}>
