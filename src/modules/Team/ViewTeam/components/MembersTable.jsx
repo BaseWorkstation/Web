@@ -29,7 +29,7 @@ export default function MembersTable({
 
   if (!teams.length) return <NoTeamView />;
 
-  if (!teamMembers.data.length && !teamMembers.unregistered_members.length)
+  if (!teamMembers.data?.length && !teamMembers.unregistered_members?.length)
     return (
       <Text textAlign="center">
         When you add members to your team, they will appear here

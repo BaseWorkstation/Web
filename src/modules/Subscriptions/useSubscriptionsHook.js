@@ -26,39 +26,34 @@ export default function useSubscriptionsHook() {
   )?.plan;
 
   const handleChooseUserPlan = async (planId, model) => {
-    const { payload, error } = await dispatch(
-      addPaymentMethod({
-        paymentable_model: model,
-        paymentable_id: userDetails.id,
-        method_type: "plan",
-        plan_id: planId,
-      })
-    );
+    try {
+      await dispatch(
+        addPaymentMethod({
+          paymentable_model: model,
+          paymentable_id: userDetails.id,
+          method_type: "plan",
+          plan_id: planId,
+        })
+      ).unwrap();
 
-    if (payload?.data) {
       toastSuccess("Subscribed to plan successfully!");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };
 
   const handleChooseTeamPlan = async (planId, model) => {
-    const { payload, error } = await dispatch(
-      addPaymentMethod({
-        paymentable_model: model,
-        paymentable_id: currentTeam.id,
-        method_type: "plan",
-        plan_id: planId,
-      })
-    );
-
-    console.log(payload);
-
-    if (payload?.data) {
+    try {
+      await dispatch(
+        addPaymentMethod({
+          paymentable_model: model,
+          paymentable_id: currentTeam.id,
+          method_type: "plan",
+          plan_id: planId,
+        })
+      ).unwrap();
       toastSuccess("Subscribed to plan successfully!");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };

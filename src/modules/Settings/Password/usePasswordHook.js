@@ -27,21 +27,20 @@ export default function usePasswordHook() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { payload, error } = await dispatch(
-      changeUserPassword({
-        old_password: passwordDetails.oldPassword,
-        password: passwordDetails.newPassword,
-        password_confirmation: passwordDetails.confirmNewPassword,
-      })
-    );
+    try {
+      await dispatch(
+        changeUserPassword({
+          old_password: passwordDetails.oldPassword,
+          password: passwordDetails.newPassword,
+          password_confirmation: passwordDetails.confirmNewPassword,
+        })
+      ).unwrap();
 
-    if (payload?.message) {
       toastSuccess(
         "Your password has been successfully changed",
         "Use this new password the next time you want to log in"
       );
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };

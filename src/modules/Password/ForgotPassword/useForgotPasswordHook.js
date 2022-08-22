@@ -40,7 +40,7 @@ export default function useForgotPasswordHook() {
       .catch(({ response }) => {
         setIsLoading(false);
         console.log(response);
-        toastError("Unable to send link", { errorMessage: response?.data });
+        toastError("Unable to send link", response);
       });
   };
 

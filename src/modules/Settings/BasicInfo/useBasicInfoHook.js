@@ -26,15 +26,16 @@ export default function useBasicInfoHook() {
   useEffect(() => {
     (async () => {
       if (!teams.length) {
-        const { payload } = await dispatch(fetchTeams());
-
-        setBasicInfoDetails((prev) => ({
-          ...prev,
-          teamName: payload[0]?.name,
-          teamAddress: payload[0]?.address,
-          teamEmail: payload[0]?.address,
-          teamPhone: payload[0]?.phone,
-        }));
+        try {
+          const data = await dispatch(fetchTeams()).unwrap();
+          setBasicInfoDetails((prev) => ({
+            ...prev,
+            teamName: data[0]?.name,
+            teamAddress: data[0]?.address,
+            teamEmail: data[0]?.address,
+            teamPhone: data[0]?.phone,
+          }));
+        } catch (error) {}
       }
     })();
   }, []);
@@ -50,22 +51,20 @@ export default function useBasicInfoHook() {
   const handleUserInfoSubmit = async (event) => {
     event.preventDefault();
 
-    const { payload, error } = await dispatch(
-      editUserDetails({
-        userId: userDetails.id,
-        payload: {
-          first_name: basicInfoDetails.firstName,
-          last_name: basicInfoDetails.lastName,
-          address: basicInfoDetails.address,
-          phone: basicInfoDetails.phone,
-        },
-      })
-    );
-
-    if (payload?.id) {
+    try {
+      await dispatch(
+        editUserDetails({
+          userId: userDetails.id,
+          payload: {
+            first_name: basicInfoDetails.firstName,
+            last_name: basicInfoDetails.lastName,
+            address: basicInfoDetails.address,
+            phone: basicInfoDetails.phone,
+          },
+        })
+      ).unwrap();
       toastSuccess("Saved successfully");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };
@@ -73,20 +72,18 @@ export default function useBasicInfoHook() {
   const handleTeamInfoSubmit = async (event) => {
     event.preventDefault();
 
-    const { payload, error } = await dispatch(
-      editTeam({
-        id: currentTeam?.id,
-        name: basicInfoDetails.teamName,
-        email: basicInfoDetails.teamEmail,
-        phone: basicInfoDetails.teamPhone,
-        address: basicInfoDetails.teamAddress,
-      })
-    );
-
-    if (payload?.id) {
+    try {
+      await dispatch(
+        editTeam({
+          id: currentTeam?.id,
+          name: basicInfoDetails.teamName,
+          email: basicInfoDetails.teamEmail,
+          phone: basicInfoDetails.teamPhone,
+          address: basicInfoDetails.teamAddress,
+        })
+      ).unwrap();
       toastSuccess("Saved successfully");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };
@@ -103,11 +100,9 @@ export default function useBasicInfoHook() {
     // append the file
     formData.append("file", imageFile);
 
-    const { payload, error } = await dispatch(uploadUserAvatar(formData));
-
-    if (payload) {
-    } else {
-      console.log(error);
+    try {
+      await dispatch(uploadUserAvatar(formData)).unwrap();
+    } catch (error) {
       toastError(null, error);
     }
 
@@ -126,11 +121,9 @@ export default function useBasicInfoHook() {
     // append the file
     formData.append("file", imageFile);
 
-    const { payload, error } = await dispatch(uploadTeamImage(formData));
-
-    if (payload) {
-    } else {
-      console.log(error);
+    try {
+      await dispatch(uploadTeamImage(formData)).unwrap();
+    } catch (error) {
       toastError(null, error);
     }
 

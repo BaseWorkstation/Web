@@ -49,9 +49,7 @@ export default function useResetPasswordHook() {
       .catch(({ response }) => {
         setIsLoading(false);
         console.log(response);
-        toastError("Unable to set new password", {
-          errorMessage: response?.data,
-        });
+        toastError("Unable to set new password", response);
       });
   };
 

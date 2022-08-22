@@ -50,22 +50,22 @@ export default function useViewTeamHook() {
   const handleSubmitMember = async (event) => {
     event.preventDefault();
 
-    const { payload, error } = await dispatch(
-      addMemberToTeam({
-        team_id: currentTeam.id,
-        emails: [
-          {
-            email_id: memberDetails.email,
-          },
-        ],
-      })
-    );
+    try {
+      await dispatch(
+        addMemberToTeam({
+          team_id: currentTeam.id,
+          emails: [
+            {
+              email_id: memberDetails.email,
+            },
+          ],
+        })
+      ).unwrap();
 
-    if (payload?.data) {
       toastSuccess("Team member has been successfully added");
       addMemberModalState.onClose();
       setMemberDetails(initialMemberDetails);
-    } else {
+    } catch (error) {
       console.log(error);
       toastError(null, error);
     }
@@ -79,14 +79,14 @@ export default function useViewTeamHook() {
   const handleRemoveMember = async (event) => {
     event.preventDefault();
 
-    const { error } = await dispatch(
-      deleteTeamMember({
-        team_id: currentTeam.id,
-        user_id: memberToRemove,
-      })
-    );
+    try {
+      await dispatch(
+        deleteTeamMember({
+          team_id: currentTeam.id,
+          user_id: memberToRemove,
+        })
+      ).unwrap();
 
-    if (!error) {
       toastSuccess("Team member has been successfully removed");
       dispatch(
         fetchTeamMembers({
@@ -94,8 +94,7 @@ export default function useViewTeamHook() {
         })
       );
       deleteMemberModalState.onClose();
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };

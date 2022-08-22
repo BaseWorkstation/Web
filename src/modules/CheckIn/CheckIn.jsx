@@ -17,6 +17,8 @@ export default function CheckIn() {
     workspaceServices,
     handleSubmitService,
     isCheckingIn,
+    forgotPinDisclosure,
+    handleRequestPin,
   } = useCheckInHook();
 
   return (
@@ -45,6 +47,8 @@ export default function CheckIn() {
                 pin={pin}
                 setPin={setPin}
                 handleSubmitPin={handleSubmitPin}
+                forgotPinDisclosure={forgotPinDisclosure}
+                handleRequestPin={handleRequestPin}
               />
             )}
 

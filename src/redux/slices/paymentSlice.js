@@ -17,7 +17,7 @@ export const fetchPayments = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -37,7 +37,7 @@ export const fetchPaymentPlans = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -57,7 +57,7 @@ export const fetchPaymentReference = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -77,7 +77,7 @@ export const fetchPaymentMethods = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -100,7 +100,7 @@ export const createPayment = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -123,7 +123,7 @@ export const addPaymentMethod = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -148,7 +148,7 @@ export const editPayment = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -167,7 +167,7 @@ export const deletePayment = createAsyncThunk(
       return paymentId;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -205,7 +205,6 @@ const paymentSlice = createSlice({
     [fetchPayments.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_PAYMENTS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -225,7 +224,6 @@ const paymentSlice = createSlice({
     [fetchPaymentPlans.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_PAYMENT_PLANS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -245,7 +243,6 @@ const paymentSlice = createSlice({
     [fetchPaymentReference.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_PAYMENT_PLANS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -265,7 +262,6 @@ const paymentSlice = createSlice({
     [fetchPaymentMethods.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_PAYMENT_METHODS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -284,7 +280,6 @@ const paymentSlice = createSlice({
     [createPayment.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CREATE_PAYMENT",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -302,7 +297,6 @@ const paymentSlice = createSlice({
     [addPaymentMethod.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "ADD_PAYMENT_METHOD",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -326,7 +320,6 @@ const paymentSlice = createSlice({
     [editPayment.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "EDIT_PAYMENT",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -352,7 +345,6 @@ const paymentSlice = createSlice({
     [deletePayment.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "DELETE_PAYMENT",
-        errorMessage: payload?.error,
       };
       delete state.backupPosition;
       delete state.backupPayment;

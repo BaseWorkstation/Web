@@ -8,17 +8,31 @@ export const separateWithComma = (number) => {
   return number ? number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") : 0;
 };
 
+const getErrorMessage = (error) => {
+  console.log(error);
+
+  if (error.status == 422) {
+    const errorKey = Object.keys(error?.data?.errors)?.[0];
+    const errorMessage = error?.data?.errors?.[errorKey]?.[0];
+
+    return `${errorKey}: ${errorMessage}`;
+  } else if (
+    error.status == 401 ||
+    error.status == 400 ||
+    error.status == 403
+  ) {
+    return error?.data?.message;
+  } else {
+    return error?.data?.message || "Kindly try again later";
+  }
+};
+
 export const toastError = (title, error, description, stay) => {
   // Trigger Chakra UI error toast
   toast({
     status: "error",
     title: title || "Could not connect to the Base servers",
-    description:
-      description ||
-      error?.errorMessage?.message ||
-      (error?.errorMessage?.errors && error?.errorMessage?.errors[0][0]) ||
-      error?.errorMessage?.error ||
-      "Kindly try again later",
+    description: description || getErrorMessage(error),
     duration: stay ? null : 4000,
     position: "top",
     variant: "top-accent",

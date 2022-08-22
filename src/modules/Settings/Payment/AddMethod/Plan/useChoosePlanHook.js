@@ -9,22 +9,19 @@ export default function useChoosePlanHook() {
   const dispatch = useDispatch();
 
   const handleChoosePlan = async (planId) => {
-    const { payload, error } = await dispatch(
-      addPaymentMethod({
-        paymentable_model: "User",
-        paymentable_id: userDetails.id,
-        method_type: "plan",
-        plan_id: planId,
-      })
-    );
+    try {
+      await dispatch(
+        addPaymentMethod({
+          paymentable_model: "User",
+          paymentable_id: userDetails.id,
+          method_type: "plan",
+          plan_id: planId,
+        })
+      ).unwrap();
 
-    console.log(payload);
-
-    if (payload?.data) {
       toastSuccess("Subscribed to plan successfully!");
       Router.push("/");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };

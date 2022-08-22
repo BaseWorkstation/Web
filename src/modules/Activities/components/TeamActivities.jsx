@@ -32,7 +32,7 @@ export default function TeamActivities({ teamLoading, teams, teamActivities }) {
     );
 
   const totalAmount = teamActivities.data.reduce((accumulator, object) => {
-    return accumulator + object.total_value_of_minutes_spent_in_naira;
+    return accumulator + Number(object.total_value_of_minutes_spent_in_naira);
   }, 0);
 
   return (

@@ -69,11 +69,10 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
   }, [reference]);
 
   const openPaymentWindow = async (id) => {
-    const { payload, error } = await dispatch(fetchPaymentReference());
-
-    if (payload?.id) {
-      setReference(payload.reference);
-    } else {
+    try {
+      const data = await dispatch(fetchPaymentReference()).unwrap();
+      setReference(data.reference);
+    } catch (error) {
       toastError(null, error);
     }
   };

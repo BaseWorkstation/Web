@@ -17,7 +17,7 @@ export const fetchTeams = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -35,7 +35,7 @@ export const fetchTeamActivities = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -53,7 +53,7 @@ export const fetchTeamMembers = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -76,7 +76,7 @@ export const createTeam = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -99,7 +99,7 @@ export const addMemberToTeam = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -124,7 +124,7 @@ export const editTeam = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -142,7 +142,7 @@ export const uploadTeamImage = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -161,7 +161,7 @@ export const deleteTeam = createAsyncThunk(
       return teamId;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -179,7 +179,7 @@ export const deleteTeamMember = createAsyncThunk(
       return deletePayload.user_id;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -217,7 +217,6 @@ const teamSlice = createSlice({
     [fetchTeams.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_TEAMS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -237,7 +236,6 @@ const teamSlice = createSlice({
     [fetchTeamActivities.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_TEAM_ACTIVITIES",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -257,7 +255,6 @@ const teamSlice = createSlice({
     [fetchTeamMembers.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_TEAM_MEMBERS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -276,7 +273,6 @@ const teamSlice = createSlice({
     [createTeam.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CREATE_TEAM",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -295,7 +291,6 @@ const teamSlice = createSlice({
     [addMemberToTeam.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "ADD_TEAM_MEMBER",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -317,7 +312,6 @@ const teamSlice = createSlice({
     [editTeam.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "EDIT_TEAM",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -340,7 +334,6 @@ const teamSlice = createSlice({
     [uploadTeamImage.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "UPLOAD_TEAM_IMAGE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -366,7 +359,6 @@ const teamSlice = createSlice({
     [deleteTeam.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "DELETE_TEAM",
-        errorMessage: payload?.error,
       };
       delete state.backupPosition;
       delete state.backupTeam;
@@ -394,7 +386,6 @@ const teamSlice = createSlice({
     [deleteTeamMember.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "DELETE_TEAM_MEMBER",
-        errorMessage: payload?.error,
       };
       // delete state.backupPosition;
       // delete state.backupTeam;

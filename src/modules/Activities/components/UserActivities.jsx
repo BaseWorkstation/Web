@@ -26,7 +26,7 @@ export default function UserActivities({ userActivities, userLoading }) {
     );
 
   const totalAmount = userActivities.data.reduce((accumulator, object) => {
-    return accumulator + object.total_value_of_minutes_spent_in_naira;
+    return accumulator + Number(object.total_value_of_minutes_spent_in_naira);
   }, 0);
 
   return (

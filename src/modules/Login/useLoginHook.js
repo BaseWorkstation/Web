@@ -50,7 +50,7 @@ export default function useLoginHook(previousRoute) {
       .catch(({ response }) => {
         setIsLoading(false);
         console.log(response);
-        toastError("Unable to log in", { errorMessage: response?.data });
+        toastError("Unable to log in", response);
       });
   };
 

@@ -24,15 +24,11 @@ export default function useCreateTeamHook() {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const { payload, error } = await dispatch(
-      createTeam({ name: teamDetails.name })
-    );
-
-    if (payload?.data) {
+    try {
+      await dispatch(createTeam({ name: teamDetails.name })).unwrap();
       toastSuccess("Team created successfully!");
       Router.push("/account/team");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };

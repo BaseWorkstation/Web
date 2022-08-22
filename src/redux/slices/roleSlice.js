@@ -17,7 +17,7 @@ export const fetchRoles = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -40,7 +40,7 @@ export const createRole = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -65,7 +65,7 @@ export const editRole = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -84,7 +84,7 @@ export const deleteRole = createAsyncThunk(
       return roleId;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -120,7 +120,6 @@ const roleSlice = createSlice({
     [fetchRoles.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_ROLES",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -139,7 +138,6 @@ const roleSlice = createSlice({
     [createRole.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CREATE_ROLE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -161,7 +159,6 @@ const roleSlice = createSlice({
     [editRole.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "EDIT_ROLE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -187,7 +184,6 @@ const roleSlice = createSlice({
     [deleteRole.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "DELETE_ROLE",
-        errorMessage: payload?.error,
       };
       delete state.backupPosition;
       delete state.backupRole;

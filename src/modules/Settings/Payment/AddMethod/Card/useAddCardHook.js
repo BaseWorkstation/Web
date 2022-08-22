@@ -86,24 +86,22 @@ export default function useAddCardHook() {
       ""
     );
 
-    const { payload, error } = await dispatch(
-      addPaymentMethod({
-        paymentable_model: "User",
-        paymentable_id: userDetails?.id,
-        method_type: "PAYG_card",
-        card_number: cardNumberWithoutWhitespace,
-        card_name: cardDetails.name,
-        card_expiry_month: expiryDateString,
-        card_expiry_year: expiryDateString,
-        card_cvc: cardDetails.cvc,
-      })
-    );
-
-    if (payload?.data) {
+    try {
+      await dispatch(
+        addPaymentMethod({
+          paymentable_model: "User",
+          paymentable_id: userDetails?.id,
+          method_type: "PAYG_card",
+          card_number: cardNumberWithoutWhitespace,
+          card_name: cardDetails.name,
+          card_expiry_month: expiryDateString,
+          card_expiry_year: expiryDateString,
+          card_cvc: cardDetails.cvc,
+        })
+      ).unwrap();
       toastSuccess("Card has been saved successfully!");
       Router.push("/");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };

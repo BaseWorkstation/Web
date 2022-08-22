@@ -15,7 +15,7 @@ export const fetchSpaces = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -38,7 +38,7 @@ export const fetchMoreSpaces = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -57,7 +57,7 @@ export const fetchSpaceDetails = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -77,7 +77,7 @@ export const fetchSpaceServices = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -99,7 +99,7 @@ export const fetchSpaceReviews = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -122,7 +122,7 @@ export const createSpace = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -141,7 +141,7 @@ export const checkInToSpace = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -161,7 +161,7 @@ export const fetchCurrentCheckIn = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -180,7 +180,7 @@ export const checkOutOfSpace = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -205,7 +205,7 @@ export const editSpace = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -224,7 +224,7 @@ export const deleteSpace = createAsyncThunk(
       return spaceId;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -264,7 +264,6 @@ const spaceSlice = createSlice({
     [fetchSpaces.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_SPACES",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -285,7 +284,6 @@ const spaceSlice = createSlice({
     [fetchMoreSpaces.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_SPACES",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -305,7 +303,6 @@ const spaceSlice = createSlice({
     [fetchSpaceDetails.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "VIEW_SPACE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -325,7 +322,6 @@ const spaceSlice = createSlice({
     [fetchSpaceServices.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_SPACE_SERVICES",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -345,7 +341,6 @@ const spaceSlice = createSlice({
     [fetchSpaceReviews.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_SPACE_REVIEWS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -364,7 +359,6 @@ const spaceSlice = createSlice({
     [createSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CREATE_SPACE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -383,7 +377,6 @@ const spaceSlice = createSlice({
     [checkInToSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CHECK_IN_TO_SPACE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -403,7 +396,6 @@ const spaceSlice = createSlice({
     [fetchCurrentCheckIn.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_CURRENT_CHECK_IN",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -422,7 +414,6 @@ const spaceSlice = createSlice({
     [checkOutOfSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CHECK_OUT_OF_SPACE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -446,7 +437,6 @@ const spaceSlice = createSlice({
     [editSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "EDIT_SPACE",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -472,7 +462,6 @@ const spaceSlice = createSlice({
     [deleteSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "DELETE_SPACE",
-        errorMessage: payload?.error,
       };
       delete state.backupPosition;
       delete state.backupSpace;

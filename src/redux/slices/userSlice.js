@@ -15,7 +15,25 @@ export const fetchUserDetails = createAsyncThunk(
       });
       return data;
     } catch ({ response }) {
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
+    }
+  }
+);
+
+export const requestUserPin = createAsyncThunk(
+  "user/requestUserPin",
+  async (requestPayload, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await Axios.post(`${BASE_API_URL}/forgot-pin`, requestPayload, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("base_acccess_token")}`,
+        },
+      });
+      return data;
+    } catch ({ response }) {
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -34,7 +52,7 @@ export const fetchUserByPin = createAsyncThunk(
       });
       return data;
     } catch ({ response }) {
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -52,7 +70,7 @@ export const fetchUserActivities = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -71,7 +89,7 @@ export const editUserDetails = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -94,7 +112,7 @@ export const changeUserPassword = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -117,7 +135,7 @@ export const editOrganizationDetails = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -135,7 +153,7 @@ export const uploadUserAvatar = createAsyncThunk(
       return data;
     } catch ({ response }) {
       console.log(response);
-      return thunkAPI.rejectWithValue({ error: response.data });
+      return thunkAPI.rejectWithValue(response);
     }
   }
 );
@@ -182,7 +200,6 @@ const userSlice = createSlice({
     [fetchUserDetails.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_USER_DETAILS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -201,7 +218,23 @@ const userSlice = createSlice({
     [fetchUserByPin.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_USER_BY_PIN",
-        errorMessage: payload?.error,
+      };
+      delete state.loading;
+    },
+
+    [requestUserPin.pending]: (state) => {
+      delete state.error;
+      delete state.success;
+      state.loading = "REQUEST_USER_PIN";
+    },
+    [requestUserPin.fulfilled]: (state, action) => {
+      state.success = "REQUEST_USER_PIN";
+      delete state.loading;
+      delete state.error;
+    },
+    [requestUserPin.rejected]: (state, { payload }) => {
+      state.error = {
+        errorType: "REQUEST_USER_PIN",
       };
       delete state.loading;
     },
@@ -221,7 +254,6 @@ const userSlice = createSlice({
     [fetchUserActivities.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "FETCH_USER_ACTIVITIES",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -245,7 +277,6 @@ const userSlice = createSlice({
     [editUserDetails.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "EDIT_USER_DETAILS",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -264,7 +295,6 @@ const userSlice = createSlice({
     [uploadUserAvatar.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "UPLOAD_USER_AVATAR",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },
@@ -282,7 +312,6 @@ const userSlice = createSlice({
     [changeUserPassword.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CHANGE_USER_PASSWORD",
-        errorMessage: payload?.error,
       };
       delete state.loading;
     },

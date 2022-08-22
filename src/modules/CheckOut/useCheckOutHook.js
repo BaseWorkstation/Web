@@ -66,11 +66,10 @@ export default function useCheckOutHook() {
   }, []);
 
   const handleFetchCheckIn = async () => {
-    const { payload, error } = await dispatch(fetchCurrentCheckIn());
-
-    if (payload.id) {
-      setWorkspace(payload?.workstation);
-    }
+    try {
+      const data = await dispatch(fetchCurrentCheckIn()).unwrap();
+      setWorkspace(data?.workstation);
+    } catch (error) {}
   };
 
   const currentUserPlan = userDetails?.payment_methods?.find(
@@ -86,11 +85,10 @@ export default function useCheckOutHook() {
   };
 
   const openPaymentWindow = async (id) => {
-    const { payload, error } = await dispatch(fetchPaymentReference());
-
-    if (payload?.id) {
-      setReference(payload.reference);
-    } else {
+    try {
+      const data = await dispatch(fetchPaymentReference()).unwrap();
+      setReference(data.reference);
+    } catch (error) {
       toastError(null, error);
     }
   };
@@ -133,13 +131,11 @@ export default function useCheckOutHook() {
       };
     }
 
-    const { payload, error } = await dispatch(checkOutOfSpace(apiPayload));
-
-    if (payload?.id) {
+    try {
+      await dispatch(checkOutOfSpace(apiPayload)).unwrap();
       toastSuccess("Checked out successfully!");
       setStage("SHOW_CONFIRMATION");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };

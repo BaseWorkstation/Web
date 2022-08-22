@@ -1,8 +1,9 @@
+import { useDisclosure } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { checkInToSpace, fetchSpaceServices } from "redux/slices/spaceSlice";
-import { fetchUserByPin } from "redux/slices/userSlice";
+import { fetchUserByPin, requestUserPin } from "redux/slices/userSlice";
 import { toastError, toastSuccess } from "utils/helpers";
 
 export default function useCheckInHook() {
@@ -12,6 +13,8 @@ export default function useCheckInHook() {
   const { spaceServices: workspaceServices, loading } = useSelector(
     (state) => state.spaces
   );
+
+  const forgotPinDisclosure = useDisclosure();
 
   const { query } = useRouter();
   const dispatch = useDispatch();
@@ -54,38 +57,50 @@ export default function useCheckInHook() {
     handleScanResult({ text: window.location.href });
   }, []);
 
+  const handleRequestPin = async (email) => {
+    if (!email.trim()) return null;
+
+    try {
+      await dispatch(
+        requestUserPin({
+          email,
+        })
+      ).unwrap();
+      toastSuccess("Your base pin has been sent to the email you provided.");
+    } catch (error) {
+      toastError(null, error);
+    }
+  };
+
   const handleSubmitPin = async (event) => {
     event.preventDefault();
 
-    const { payload, error } = await dispatch(
-      fetchUserByPin({
-        unique_pin: pin,
-      })
-    );
-
-    if (payload?.id) {
+    try {
+      await dispatch(
+        fetchUserByPin({
+          unique_pin: pin,
+        })
+      ).unwrap();
       setStage("CHOOSE_SERVICE");
-    } else {
-      console.log(error);
+    } catch (error) {
       toastError(null, error);
     }
   };
 
   const handleSubmitService = async (serviceId) => {
-    const { payload, error } = await dispatch(
-      checkInToSpace({
-        service_id: serviceId,
-        unique_pin: pin,
-      })
-    );
+    try {
+      const data = await dispatch(
+        checkInToSpace({
+          service_id: serviceId,
+          unique_pin: pin,
+        })
+      ).unwrap();
 
-    if (payload?.id) {
       toastSuccess("Checked in successfully!");
       setStage("SHOW_ATTENDANT");
       // Save access token of newly checked-in user to localStorage
-      localStorage.setItem("base_acccess_token", payload?.token);
-    } else {
-      console.log(error);
+      localStorage.setItem("base_acccess_token", data?.token);
+    } catch (error) {
       toastError(null, error);
     }
   };
@@ -100,5 +115,7 @@ export default function useCheckInHook() {
     workspaceServices,
     handleSubmitService,
     isCheckingIn: loading === "CHECK_IN_TO_SPACE",
+    forgotPinDisclosure,
+    handleRequestPin,
   };
 }
