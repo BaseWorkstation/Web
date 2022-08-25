@@ -12,39 +12,36 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
-import ForgotPin from "./ForgotPin";
 
-export default function ConfirmPin({
+export default function ConfirmOTP({
   workspace,
-  pin,
-  setPin,
-  handleSubmitPin,
-  forgotPinDisclosure,
-  handleRequestPin,
+  otp,
+  setOTP,
+  handleSubmitOTP,
+  isCheckingOut,
 }) {
-  const { loading } = useSelector((state) => state.user);
-
   return (
     <Stack divider={<StackDivider />} pb={6} spacing={0}>
       <Stack color="blue.800" pb={4} px={6}>
         <Heading textAlign="center" fontSize="2xl">
-          Check in to {workspace?.name}
+          Check out of {workspace?.name}
         </Heading>
       </Stack>
-      <VStack as="form" onSubmit={handleSubmitPin} pt={8} px={0}>
+      <VStack as="form" onSubmit={handleSubmitOTP} pt={8} px={0}>
         <VStack>
           <Text fontSize="xl" fontWeight={700}>
-            Enter PIN
+            Enter OTP
           </Text>
           <Text textAlign="center" color="blue.800">
-            Enter your 4 digit pin to check in to this base
+            An OTP has been sent to Venia Business Hub. Enter the otp to allow
+            you check out
           </Text>
         </VStack>
 
         <HStack pt={97} pb={20} spacing={10}>
           <PinInput
-            value={pin}
-            onChange={setPin}
+            value={otp}
+            onChange={setOTP}
             variant="flushed"
             focusBorderColor="primary.500"
             size="lg"
@@ -69,37 +66,13 @@ export default function ConfirmPin({
           colorScheme="primary"
           fontWeight={500}
           w={250}
-          isLoading={loading === "FETCH_USER_BY_PIN"}
-          loadingText="Checking..."
+          isLoading={isCheckingOut}
+          loadingText="Checking out..."
           h={57}
           type="submit"
         >
-          Check In
+          Check Out
         </Button>
-        <Stack pt={16} spacing={4}>
-          <Text fontSize="xs" textAlign="center">
-            Forgot pin?{" "}
-            <ChakraLink
-              onClick={forgotPinDisclosure.onOpen}
-              fontWeight="semibold"
-              color="primary.500"
-            >
-              Click here
-            </ChakraLink>
-          </Text>
-          <ForgotPin
-            forgotPinDisclosure={forgotPinDisclosure}
-            handleRequestPin={handleRequestPin}
-          />
-          <Text fontSize="xs" textAlign="center">
-            Don't have a pin?{" "}
-            <Link href="/register">
-              <ChakraLink fontWeight="semibold" color="primary.500">
-                Create a Base account now
-              </ChakraLink>
-            </Link>
-          </Text>
-        </Stack>
       </VStack>
     </Stack>
   );

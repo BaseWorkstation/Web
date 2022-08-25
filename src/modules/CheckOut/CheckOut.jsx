@@ -10,7 +10,7 @@ import useCheckOutHook from "./useCheckOutHook";
 export default function CheckIn() {
   const {
     stage,
-    workspace,
+    checkoutDetails,
     currentCheckIn,
     currentUserPlan,
     currentTeamPlan,
@@ -53,24 +53,25 @@ export default function CheckIn() {
             pt={9}
             pb={6}
           >
+            {stage === "CONFIRM_PIN" && (
+              <ConfirmPin
+                workspace={currentCheckIn?.workstation}
+                isCheckingOut={isCheckingOut}
+                pin={pin}
+                setPin={setPin}
+                handleSubmitPin={handleSubmitPin}
+              />
+            )}
+
             {stage === "SHOW_SUMMARY" && (
               <Summary
+                checkoutDetails={checkoutDetails}
                 currentCheckIn={currentCheckIn}
                 currentUserPlan={currentUserPlan}
                 currentTeamPlan={currentTeamPlan}
                 method={method}
                 setMethod={setMethod}
                 handleSubmitMethod={handleSubmitMethod}
-              />
-            )}
-
-            {stage === "CONFIRM_PIN" && (
-              <ConfirmPin
-                workspace={currentCheckIn}
-                isCheckingOut={isCheckingOut}
-                pin={pin}
-                setPin={setPin}
-                handleSubmitPin={handleSubmitPin}
               />
             )}
 

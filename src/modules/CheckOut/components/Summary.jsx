@@ -15,8 +15,10 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { useSelector } from "react-redux";
+import { convertMinutesToHHMMSS, separateWithComma } from "utils/helpers";
 
 export default function Summary({
+  checkoutDetails,
   currentCheckIn,
   currentUserPlan,
   currentTeamPlan,
@@ -24,6 +26,8 @@ export default function Summary({
   setMethod,
   handleSubmitMethod,
 }) {
+  console.log(checkoutDetails);
+
   return (
     <Stack divider={<StackDivider />} pb={6} spacing={0}>
       <Stack color="blue.800" pb={4} px={6}>
@@ -37,28 +41,46 @@ export default function Summary({
             <Text fontWeight="bold" color="primary.500">
               Base Name:
             </Text>
-            <Text fontWeight={500}>{currentCheckIn?.name}</Text>
+            <Text fontWeight={500}>{checkoutDetails?.workstation?.name}</Text>
           </HStack>
 
           <HStack>
             <Text fontWeight="bold" color="primary.500">
               Location:
             </Text>
-            <Text fontWeight={500}> 12, Adeniyi jones Av, Ikeja, Lagos</Text>
+            <Text fontWeight={500}>
+              {" "}
+              {checkoutDetails?.workstation?.street},{" "}
+              {checkoutDetails?.workstation?.city},{" "}
+              {checkoutDetails?.workstation?.state}
+            </Text>
           </HStack>
 
           <HStack>
             <Text fontWeight="bold" color="primary.500">
               Total Time Used:
             </Text>
-            <Text fontWeight={500}> 01:00:05</Text>
+            <Text fontWeight={500}>
+              {convertMinutesToHHMMSS(checkoutDetails?.total_minutes_spent)}
+            </Text>
           </HStack>
 
           <HStack>
             <Text fontWeight="bold" color="primary.500">
               Amount:
             </Text>
-            <Text fontWeight={500}> 2,500 ( N50/hr)</Text>
+            <Text fontWeight={500}>
+              {" "}
+              N
+              {separateWithComma(
+                checkoutDetails?.total_value_of_minutes_spent_in_naira
+              )}{" "}
+              (N
+              {separateWithComma(
+                checkoutDetails?.space_price_per_minute_at_the_time
+              )}
+              /min)
+            </Text>
           </HStack>
 
           <Stack pt={6} pb={8}>

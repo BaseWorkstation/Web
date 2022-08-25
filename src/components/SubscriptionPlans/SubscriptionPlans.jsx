@@ -19,19 +19,15 @@ import {
 } from "redux/slices/paymentSlice";
 import theme from "theme";
 import { kConvert, toastError } from "utils/helpers";
-import {
-  usePaystackPayment,
-  PaystackButton,
-  PaystackConsumer,
-} from "react-paystack";
+import { usePaystackPayment } from "react-paystack";
+import { nanoid } from "@reduxjs/toolkit";
 
 const ctaColors = ["primary.500", "#9747FF", "gray.800"]; // Used for mapping bgColors to the CTA buttons
 
 export default function SubscriptionPlans({ currentPlanId, onSelect }) {
   const { paymentPlans, loading } = useSelector((state) => state.payments);
   const { userDetails } = useSelector((state) => state.user);
-  const [selectedPlanId, setSelectedPlanId] = useState(null);
-  const [amount, setAmount] = useState("");
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const [reference, setReference] = useState("");
 
   const dispatch = useDispatch();
@@ -46,15 +42,16 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
   const config = {
     reference,
     email: userDetails?.email,
-    amount: amount * 100,
+    amount: selectedPlan?.price_per_month * 100,
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
     firstname: userDetails?.first_name,
     lastname: userDetails?.last_name,
+    plan: selectedPlan?.plan_code,
   };
   const initializePayment = usePaystackPayment(config);
 
-  const onSuccess = (reference) => {
-    onSelect(selectedPlanId);
+  const onSuccess = ({ reference }) => {
+    onSelect(selectedPlan?.plan_code, reference);
     setReference("");
   };
 
@@ -70,8 +67,8 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
 
   const openPaymentWindow = async (id) => {
     try {
-      const data = await dispatch(fetchPaymentReference()).unwrap();
-      setReference(data.reference);
+      const uniqueReference = `base_plan_${nanoid()}`;
+      setReference(uniqueReference);
     } catch (error) {
       toastError(null, error);
     }
@@ -88,7 +85,8 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
     >
       <Spinner loading={!paymentPlans.length} />
 
-      {paymentPlans.map(({ id, name, price_per_month }, index) => {
+      {paymentPlans.map((plan, index) => {
+        const { id, name, price_per_month } = plan;
         const isCurrent = currentPlanId === id;
 
         return (
@@ -106,11 +104,11 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
                 {name}
               </Heading>
               <Text fontSize="xl" color="gray.400">
-                {kConvert(price_per_month)} p/month
+                N{kConvert(price_per_month)} p/month
               </Text>
             </Stack>
             <Stack spacing={6} p={6} pt={4}>
-              {[0, 1, 2, 3, 4].map((index) => (
+              {[0].map((index) => (
                 <HStack key={index} spacing={3}>
                   <IoIosCheckmarkCircle
                     fontSize={24}
@@ -131,15 +129,14 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
                   }
                   w="full"
                   colorScheme="default"
-                  isLoading={isLoading && selectedPlanId === id}
+                  isLoading={isLoading && selectedPlan?.id === id}
                   isDisabled={isLoading || isCurrent}
                   loadingText="Loading..."
                   bg={ctaColors[index]}
                   size="lg"
                   h="56px"
                   onClick={() => {
-                    setAmount(price_per_month);
-                    setSelectedPlanId(id);
+                    setSelectedPlan(plan);
                     openPaymentWindow(id);
                   }}
                 >

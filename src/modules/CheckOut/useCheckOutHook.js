@@ -14,11 +14,11 @@ import { fetchUserByPin } from "redux/slices/userSlice";
 import { toastError, toastSuccess } from "utils/helpers";
 
 export default function useCheckOutHook() {
-  const [stage, setStage] = useState("SHOW_SUMMARY");
+  const [stage, setStage] = useState("CONFIRM_PIN");
   const [pin, setPin] = useState("");
   const { teams } = useSelector((state) => state.teams);
   const [method, setMethod] = useState("");
-  const [workspace, setWorkspace] = useState(null);
+  const [checkoutDetails, setCheckoutDetails] = useState(null);
   const {
     spaceServices: workspaceServices,
     currentCheckIn,
@@ -68,7 +68,7 @@ export default function useCheckOutHook() {
   const handleFetchCheckIn = async () => {
     try {
       const data = await dispatch(fetchCurrentCheckIn()).unwrap();
-      setWorkspace(data?.workstation);
+      // setCheckoutDetails(data?.workstation);
     } catch (error) {}
   };
 
@@ -81,7 +81,7 @@ export default function useCheckOutHook() {
   )?.plan;
 
   const handleSubmitMethod = async () => {
-    setStage("CONFIRM_PIN");
+    setStage("CONFIRM_OTP");
   };
 
   const openPaymentWindow = async (id) => {
@@ -95,9 +95,23 @@ export default function useCheckOutHook() {
 
   const handleSubmitPin = async (event) => {
     event.preventDefault();
-    if (method === "PAYG_cash") {
-      openPaymentWindow();
-    } else {
+    // if (method === "PAYG_cash") {
+    //   openPaymentWindow();
+    // } else {
+    // }
+
+    try {
+      const data = await dispatch(
+        checkOutOfSpace({
+          user_id: userDetails?.id,
+          unique_pin: pin,
+        })
+      ).unwrap();
+      console.log(data);
+      setCheckoutDetails(data);
+      setStage("SHOW_SUMMARY");
+    } catch (error) {
+      toastError(null, error);
     }
   };
 
@@ -142,7 +156,7 @@ export default function useCheckOutHook() {
 
   return {
     stage,
-    workspace,
+    checkoutDetails,
     currentCheckIn,
     currentUserPlan,
     currentTeamPlan,

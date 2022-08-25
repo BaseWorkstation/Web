@@ -8,14 +8,15 @@ export default function useChoosePlanHook() {
   const { userDetails } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
-  const handleChoosePlan = async (planId) => {
+  const handleChoosePlan = async (planCode, reference) => {
     try {
       await dispatch(
         addPaymentMethod({
           paymentable_model: "User",
           paymentable_id: userDetails.id,
           method_type: "plan",
-          plan_id: planId,
+          plan_code: planCode,
+          payment_reference: reference,
         })
       ).unwrap();
 

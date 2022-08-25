@@ -29,7 +29,7 @@ export default function CheckInStatus() {
     if (userDetails?.check_in_status && !currentCheckIn) {
       dispatch(fetchCurrentCheckIn());
     }
-  }, []);
+  }, [!!userDetails]);
 
   if (!userDetails?.check_in_status) return null;
 
@@ -46,7 +46,8 @@ export default function CheckInStatus() {
                 fontSize={20}
                 textAlign="center"
               >
-                You're about to checkout
+                You're about to checkout from{" "}
+                {currentCheckIn?.workstation?.name}
               </Text>
             </VStack>
             <Divider borderColor="gray.400" />

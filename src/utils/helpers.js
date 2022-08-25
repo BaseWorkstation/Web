@@ -9,18 +9,14 @@ export const separateWithComma = (number) => {
 };
 
 const getErrorMessage = (error) => {
-  console.log(error);
-
   if (error.status == 422) {
     const errorKey = Object.keys(error?.data?.errors)?.[0];
     const errorMessage = error?.data?.errors?.[errorKey]?.[0];
 
     return `${errorKey}: ${errorMessage}`;
-  } else if (
-    error.status == 401 ||
-    error.status == 400 ||
-    error.status == 403
-  ) {
+  } else if (error.status == 401) {
+    return error?.data?.error;
+  } else if (error.status == 400 || error.status == 403) {
     return error?.data?.message;
   } else {
     return error?.data?.message || "Kindly try again later";
@@ -31,7 +27,7 @@ export const toastError = (title, error, description, stay) => {
   // Trigger Chakra UI error toast
   toast({
     status: "error",
-    title: title || "Could not connect to the Base servers",
+    title: title || "Error",
     description: description || getErrorMessage(error),
     duration: stay ? null : 4000,
     position: "top",
@@ -90,4 +86,20 @@ export const checkIfCurrentTimeIsBetweenRange = (startTime, endTime) => {
   const isBeforeEndTime = moment().isSameOrBefore(moment(endTime, "hh:mm:ss"));
 
   return isAfterStartTime && isBeforeEndTime;
+};
+
+export const convertMinutesToHHMMSS = (minutes) => {
+  const m = minutes % 60;
+
+  const h = (minutes - m) / 60;
+
+  const HHMMSS =
+    (h < 10 ? "0" : "") +
+    h.toString() +
+    ":" +
+    (m < 10 ? "0" : "") +
+    m.toString() +
+    ":00";
+
+  return HHMMSS;
 };
