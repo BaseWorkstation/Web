@@ -11,30 +11,36 @@ import {
   Link as ChakraLink,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function ConfirmOTP({
-  workspace,
-  otp,
-  setOTP,
+  checkoutDetails,
   handleSubmitOTP,
-  isCheckingOut,
+  isConfirmingOTP,
 }) {
+  const [otp, setOTP] = useState("");
+
+  const onSubmitOTP = async (event) => {
+    event.preventDefault();
+    handleSubmitOTP(otp);
+  };
+
   return (
     <Stack divider={<StackDivider />} pb={6} spacing={0}>
       <Stack color="blue.800" pb={4} px={6}>
         <Heading textAlign="center" fontSize="2xl">
-          Check out of {workspace?.name}
+          Confirm Payment
         </Heading>
       </Stack>
-      <VStack as="form" onSubmit={handleSubmitOTP} pt={8} px={0}>
+      <VStack as="form" onSubmit={onSubmitOTP} pt={8} px={4}>
         <VStack>
           <Text fontSize="xl" fontWeight={700}>
             Enter OTP
           </Text>
           <Text textAlign="center" color="blue.800">
-            An OTP has been sent to Venia Business Hub. Enter the otp to allow
-            you check out
+            An OTP has been sent to {checkoutDetails?.workstation?.name}. Enter
+            the otp to allow you check out
           </Text>
         </VStack>
 
@@ -66,12 +72,12 @@ export default function ConfirmOTP({
           colorScheme="primary"
           fontWeight={500}
           w={250}
-          isLoading={isCheckingOut}
-          loadingText="Checking out..."
+          isLoading={isConfirmingOTP}
+          loadingText="Checking..."
           h={57}
           type="submit"
         >
-          Check Out
+          Confirm OTP
         </Button>
       </VStack>
     </Stack>

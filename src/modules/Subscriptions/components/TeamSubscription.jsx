@@ -17,7 +17,9 @@ export default function TeamSubscription({ currentPlan, handleChoosePlan }) {
 
       <SubscriptionPlans
         currentPlanId={currentPlan?.id}
-        onSelect={(planId) => handleChoosePlan(planId, "Team")}
+        onSelect={(planCode, reference) =>
+          handleChoosePlan(planCode, reference, "Team")
+        }
       />
     </Stack>
   );

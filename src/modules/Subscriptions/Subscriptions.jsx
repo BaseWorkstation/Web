@@ -1,4 +1,5 @@
 import {
+  HStack,
   Stack,
   Tab,
   TabList,
@@ -58,16 +59,20 @@ export default function Subscriptions() {
 
           <TabPanels>
             <TabPanel px={0} pt={[5, 5]}>
-              <UserSubscription
-                currentPlan={currentUserPlan}
-                handleChoosePlan={handleChooseUserPlan}
-              />
+              <HStack>
+                <UserSubscription
+                  currentPlan={currentUserPlan}
+                  handleChoosePlan={handleChooseUserPlan}
+                />
+              </HStack>
             </TabPanel>
             <TabPanel px={0} pt={[5, 5]}>
-              <TeamSubscription
-                currentPlan={currentTeamPlan}
-                handleChoosePlan={handleChooseTeamPlan}
-              />
+              <HStack>
+                <TeamSubscription
+                  currentPlan={currentTeamPlan}
+                  handleChoosePlan={handleChooseTeamPlan}
+                />
+              </HStack>
             </TabPanel>
           </TabPanels>
         </Tabs>

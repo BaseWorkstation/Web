@@ -185,6 +185,31 @@ export const checkOutOfSpace = createAsyncThunk(
   }
 );
 
+export const confirmCheckoutOTP = createAsyncThunk(
+  "spaces/confirmCheckoutOTP",
+  async (confirmPayload, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await Axios.post(
+        `${BASE_API_URL}/visits/verify-otp`,
+        confirmPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "base_acccess_token"
+            )}`,
+          },
+        }
+      );
+      return data;
+    } catch ({ response }) {
+      console.log(response);
+      return thunkAPI.rejectWithValue(response);
+    }
+  }
+);
+
 export const editSpace = createAsyncThunk(
   "spaces/editSpace",
   async (editPayload, thunkAPI) => {
@@ -414,6 +439,23 @@ const spaceSlice = createSlice({
     [checkOutOfSpace.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "CHECK_OUT_OF_SPACE",
+      };
+      delete state.loading;
+    },
+
+    [confirmCheckoutOTP.pending]: (state) => {
+      delete state.error;
+      delete state.success;
+      state.loading = "CONFIRM_CHECKOUT_OTP";
+    },
+    [confirmCheckoutOTP.fulfilled]: (state, action) => {
+      state.success = "CONFIRM_CHECKOUT_OTP";
+      delete state.loading;
+      delete state.error;
+    },
+    [confirmCheckoutOTP.rejected]: (state, { payload }) => {
+      state.error = {
+        errorType: "CONFIRM_CHECKOUT_OTP",
       };
       delete state.loading;
     },

@@ -1,3 +1,4 @@
+import Router from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPaymentMethod } from "redux/slices/paymentSlice";
@@ -25,34 +26,43 @@ export default function useSubscriptionsHook() {
     ({ method }) => method === "plan"
   )?.plan;
 
-  const handleChooseUserPlan = async (planId, model) => {
+  const handleChooseUserPlan = async (planCode, reference, model) => {
     try {
       await dispatch(
         addPaymentMethod({
-          paymentable_model: model,
-          paymentable_id: userDetails.id,
+          paid_by_model: model,
+          paid_by_id: userDetails.id,
+          paid_for_model: "User",
+          paid_for_id: userDetails.id,
           method_type: "plan",
-          plan_id: planId,
+          plan_code: planCode,
+          payment_reference: reference,
         })
       ).unwrap();
 
       toastSuccess("Subscribed to plan successfully!");
+
+      Router.reload();
     } catch (error) {
       toastError(null, error);
     }
   };
 
-  const handleChooseTeamPlan = async (planId, model) => {
+  const handleChooseTeamPlan = async (planCode, reference, model) => {
     try {
       await dispatch(
         addPaymentMethod({
-          paymentable_model: model,
-          paymentable_id: currentTeam.id,
+          paid_by_model: model,
+          paid_by_id: currentTeam?.id,
+          paid_for_model: "User",
+          paid_for_id: userDetails.id,
           method_type: "plan",
-          plan_id: planId,
+          plan_code: planCode,
+          payment_reference: reference,
         })
       ).unwrap();
       toastSuccess("Subscribed to plan successfully!");
+      Router.reload();
     } catch (error) {
       toastError(null, error);
     }

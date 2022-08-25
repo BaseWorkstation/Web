@@ -1,3 +1,4 @@
+import { nanoid } from "@reduxjs/toolkit";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { usePaystackPayment } from "react-paystack";
@@ -6,6 +7,7 @@ import { fetchPaymentReference } from "redux/slices/paymentSlice";
 import {
   checkInToSpace,
   checkOutOfSpace,
+  confirmCheckoutOTP,
   fetchCurrentCheckIn,
   fetchSpaceServices,
 } from "redux/slices/spaceSlice";
@@ -67,7 +69,7 @@ export default function useCheckOutHook() {
 
   const handleFetchCheckIn = async () => {
     try {
-      const data = await dispatch(fetchCurrentCheckIn()).unwrap();
+      await dispatch(fetchCurrentCheckIn()).unwrap();
       // setCheckoutDetails(data?.workstation);
     } catch (error) {}
   };
@@ -84,10 +86,10 @@ export default function useCheckOutHook() {
     setStage("CONFIRM_OTP");
   };
 
-  const openPaymentWindow = async (id) => {
+  const openPaymentWindow = async () => {
     try {
-      const data = await dispatch(fetchPaymentReference()).unwrap();
-      setReference(data.reference);
+      const uniqueReference = `base_plan_${nanoid()}`;
+      setReference(uniqueReference);
     } catch (error) {
       toastError(null, error);
     }
@@ -95,10 +97,6 @@ export default function useCheckOutHook() {
 
   const handleSubmitPin = async (event) => {
     event.preventDefault();
-    // if (method === "PAYG_cash") {
-    //   openPaymentWindow();
-    // } else {
-    // }
 
     try {
       const data = await dispatch(
@@ -107,9 +105,28 @@ export default function useCheckOutHook() {
           unique_pin: pin,
         })
       ).unwrap();
-      console.log(data);
       setCheckoutDetails(data);
+      setAmount(data?.total_value_of_minutes_spent_in_naira);
       setStage("SHOW_SUMMARY");
+    } catch (error) {
+      toastError(null, error);
+    }
+  };
+
+  const handleSubmitOTP = async (otp) => {
+    try {
+      const data = await dispatch(
+        confirmCheckoutOTP({
+          visit_id: checkoutDetails?.id,
+          otp,
+        })
+      ).unwrap();
+      console.log(data);
+
+      if (method === "PAYG_cash") {
+        openPaymentWindow();
+      } else {
+      }
     } catch (error) {
       toastError(null, error);
     }
@@ -169,5 +186,7 @@ export default function useCheckOutHook() {
     handleSubmitPin,
     isCheckedIn: userDetails?.check_in_status,
     isCheckingOut: loading === "CHECK_OUT_OF_SPACE",
+    isConfirmingOTP: loading === "CONFIRM_CHECKOUT_OTP",
+    handleSubmitOTP,
   };
 }
