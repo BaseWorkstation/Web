@@ -10,6 +10,7 @@ import {
   confirmCheckoutOTP,
   fetchCurrentCheckIn,
   fetchSpaceServices,
+  saveCheckoutPayment,
 } from "redux/slices/spaceSlice";
 import { fetchTeams } from "redux/slices/teamSlice";
 import { fetchUserByPin } from "redux/slices/userSlice";
@@ -43,7 +44,7 @@ export default function useCheckOutHook() {
   const dispatch = useDispatch();
   const currentTeam = teams[0];
 
-  const onSuccess = (reference) => {
+  const onSuccess = ({ reference }) => {
     savePayment(reference);
     setReference("");
   };
@@ -88,7 +89,7 @@ export default function useCheckOutHook() {
 
   const openPaymentWindow = async () => {
     try {
-      const uniqueReference = `base_plan_${nanoid()}`;
+      const uniqueReference = `base_checkout_${nanoid()}`;
       setReference(uniqueReference);
     } catch (error) {
       toastError(null, error);
@@ -124,8 +125,9 @@ export default function useCheckOutHook() {
       console.log(data);
 
       if (method === "PAYG_cash") {
+        savePayment();
+      } else if (method === "PAYG_card") {
         openPaymentWindow();
-      } else {
       }
     } catch (error) {
       toastError(null, error);
@@ -134,17 +136,17 @@ export default function useCheckOutHook() {
 
   const savePayment = async (reference) => {
     let apiPayload = {
-      user_id: userDetails?.id,
-      unique_pin: pin,
+      visit_id: checkoutDetails?.id,
+      payment_method_type: method,
     };
 
-    if (method === "PAYG_cash") {
+    if (method === "PAYG_card") {
       apiPayload = {
         ...apiPayload,
-        payer: "User",
-        payment_method_type: "PAYG_cash",
+        payment_reference: reference,
       };
     }
+
     if (method === "plan") {
       apiPayload = {
         ...apiPayload,
@@ -163,8 +165,8 @@ export default function useCheckOutHook() {
     }
 
     try {
-      await dispatch(checkOutOfSpace(apiPayload)).unwrap();
-      toastSuccess("Checked out successfully!");
+      await dispatch(saveCheckoutPayment(apiPayload)).unwrap();
+      toastSuccess("Payment made successfully!");
       setStage("SHOW_CONFIRMATION");
     } catch (error) {
       toastError(null, error);
@@ -187,6 +189,7 @@ export default function useCheckOutHook() {
     isCheckedIn: userDetails?.check_in_status,
     isCheckingOut: loading === "CHECK_OUT_OF_SPACE",
     isConfirmingOTP: loading === "CONFIRM_CHECKOUT_OTP",
+    isSavingPayment: loading === "SAVE_CHECKOUT_PAYMENT",
     handleSubmitOTP,
   };
 }

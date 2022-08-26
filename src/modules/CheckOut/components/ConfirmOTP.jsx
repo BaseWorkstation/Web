@@ -18,6 +18,7 @@ export default function ConfirmOTP({
   checkoutDetails,
   handleSubmitOTP,
   isConfirmingOTP,
+  isSavingPayment,
 }) {
   const [otp, setOTP] = useState("");
 
@@ -72,8 +73,8 @@ export default function ConfirmOTP({
           colorScheme="primary"
           fontWeight={500}
           w={250}
-          isLoading={isConfirmingOTP}
-          loadingText="Checking..."
+          isLoading={isConfirmingOTP || isSavingPayment}
+          loadingText={isConfirmingOTP ? "Checking..." : "Saving..."}
           h={57}
           type="submit"
         >

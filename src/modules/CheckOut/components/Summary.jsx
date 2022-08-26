@@ -93,6 +93,9 @@ export default function Summary({
                 <Radio size="lg" value="PAYG_cash">
                   Cash
                 </Radio>
+                <Radio size="lg" value="PAYG_card">
+                  Card
+                </Radio>
                 {/* {currentUserPlan && (
                   <Radio size="lg" value="plan">
                     Plan Payment

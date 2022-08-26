@@ -1,7 +1,6 @@
 import { Button, Center, Stack, Text, VStack } from "@chakra-ui/react";
 import { Logo } from "components/Logo";
 import Link from "next/link";
-import ChooseService from "./components/ChooseService";
 import ConfirmOTP from "./components/ConfirmOTP";
 import ConfirmPin from "./components/ConfirmPin";
 import ShowConfirmation from "./components/ShowConfirmation";
@@ -25,6 +24,7 @@ export default function CheckIn() {
     handleSubmitOTP,
     isCheckedIn,
     isCheckingOut,
+    isSavingPayment,
   } = useCheckOutHook();
 
   if (!isCheckedIn)
@@ -82,6 +82,7 @@ export default function CheckIn() {
                 checkoutDetails={checkoutDetails}
                 isConfirmingOTP={isConfirmingOTP}
                 handleSubmitOTP={handleSubmitOTP}
+                isSavingPayment={isSavingPayment}
               />
             )}
 
