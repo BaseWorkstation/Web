@@ -14,6 +14,7 @@ import useSubscriptionsHook from "./useSubscriptionsHook";
 
 export default function Subscriptions() {
   const {
+    isTeamOwner,
     currentUserPlan,
     handleChooseUserPlan,
     currentTeamPlan,
@@ -46,34 +47,41 @@ export default function Subscriptions() {
             >
               My Subscription
             </Tab>
-            <Tab
-              rounded={8}
-              color="gray.500"
-              fontSize={["md", "md", "lg"]}
-              px={[3, 8]}
-              _selected={{ bg: "rgba(0, 171, 231, 0.15);", color: "blue.800" }}
-            >
-              My Team Subscription
-            </Tab>
+            {isTeamOwner && (
+              <Tab
+                rounded={8}
+                color="gray.500"
+                fontSize={["md", "md", "lg"]}
+                px={[3, 8]}
+                _selected={{
+                  bg: "rgba(0, 171, 231, 0.15);",
+                  color: "blue.800",
+                }}
+              >
+                My Team Subscription
+              </Tab>
+            )}
           </TabList>
 
           <TabPanels>
             <TabPanel px={0} pt={[5, 5]}>
-              <HStack>
+              <HStack w="full" justify="center">
                 <UserSubscription
                   currentPlan={currentUserPlan}
                   handleChoosePlan={handleChooseUserPlan}
                 />
               </HStack>
             </TabPanel>
-            <TabPanel px={0} pt={[5, 5]}>
-              <HStack>
-                <TeamSubscription
-                  currentPlan={currentTeamPlan}
-                  handleChoosePlan={handleChooseTeamPlan}
-                />
-              </HStack>
-            </TabPanel>
+            {isTeamOwner && (
+              <TabPanel px={0} pt={[5, 5]}>
+                <HStack justify="center">
+                  <TeamSubscription
+                    currentPlan={currentTeamPlan}
+                    handleChoosePlan={handleChooseTeamPlan}
+                  />
+                </HStack>
+              </TabPanel>
+            )}
           </TabPanels>
         </Tabs>
       </Stack>

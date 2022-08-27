@@ -59,7 +59,7 @@ export const exploreMenuOptions = [
   },
   {
     name: "For teams",
-    href: "https://trybase.co/teams",
+    href: "https://www.trybase.co/for-team",
     isProtected: false,
   },
   {

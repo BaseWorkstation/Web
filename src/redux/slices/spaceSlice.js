@@ -152,12 +152,17 @@ export const fetchCurrentCheckIn = createAsyncThunk(
     try {
       const {
         data: { data },
-      } = await Axios.get(`${BASE_API_URL}/visits/1`, {
-        params: fetchPayload,
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("base_acccess_token")}`,
-        },
-      });
+      } = await Axios.get(
+        `${BASE_API_URL}/workstations/${fetchPayload?.workstation_id}`,
+        {
+          params: fetchPayload,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "base_acccess_token"
+            )}`,
+          },
+        }
+      );
       return data;
     } catch ({ response }) {
       console.log(response);

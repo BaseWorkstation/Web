@@ -13,7 +13,6 @@ export default function CheckIn() {
     checkoutDetails,
     currentCheckIn,
     currentUserPlan,
-    currentTeamPlan,
     pin,
     setPin,
     method,
@@ -57,7 +56,7 @@ export default function CheckIn() {
           >
             {stage === "CONFIRM_PIN" && (
               <ConfirmPin
-                workspace={currentCheckIn?.workstation}
+                workspace={currentCheckIn}
                 isCheckingOut={isCheckingOut}
                 pin={pin}
                 setPin={setPin}
@@ -70,7 +69,6 @@ export default function CheckIn() {
                 checkoutDetails={checkoutDetails}
                 currentCheckIn={currentCheckIn}
                 currentUserPlan={currentUserPlan}
-                currentTeamPlan={currentTeamPlan}
                 method={method}
                 setMethod={setMethod}
                 handleSubmitMethod={handleSubmitMethod}

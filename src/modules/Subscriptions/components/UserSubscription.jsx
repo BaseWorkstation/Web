@@ -1,10 +1,10 @@
 import React from "react";
-import { Box, Stack, StackDivider, Text } from "@chakra-ui/react";
+import { Box, HStack, Stack, StackDivider, Text } from "@chakra-ui/react";
 import SubscriptionPlans from "components/SubscriptionPlans/SubscriptionPlans";
 
 export default function UserSubscription({ currentPlan, handleChoosePlan }) {
   return (
-    <Stack spacing={[4, 8]} divider={<StackDivider />}>
+    <Stack spacing={[4, 8]} w="full" divider={<StackDivider />}>
       {currentPlan && (
         <Text>
           You're currently subscribed to the{" "}
@@ -14,13 +14,14 @@ export default function UserSubscription({ currentPlan, handleChoosePlan }) {
           Plan. To change your plan select from an option below
         </Text>
       )}
-
-      <SubscriptionPlans
-        currentPlanId={currentPlan?.id}
-        onSelect={(planCode, reference) =>
-          handleChoosePlan(planCode, reference, "User")
-        }
-      />
+      <HStack w="full" justify="center">
+        <SubscriptionPlans
+          currentPlanId={currentPlan?.id}
+          onSelect={(planCode, reference) =>
+            handleChoosePlan(planCode, reference, "User")
+          }
+        />
+      </HStack>
     </Stack>
   );
 }

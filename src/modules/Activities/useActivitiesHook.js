@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchTeamActivities, fetchTeams } from "redux/slices/teamSlice";
+import { fetchTeamActivities, fetchTeam } from "redux/slices/teamSlice";
 import { fetchUserActivities } from "redux/slices/userSlice";
 import { formatDateToYYYYMMDD } from "utils/helpers";
 
@@ -11,16 +11,16 @@ export default function useActivitiesHook() {
     userActivities,
     loading: userLoading,
   } = useSelector((state) => state.user);
-  const { teams, teamActivities, loading } = useSelector(
-    (state) => state.teams
-  );
+  const { team, teamActivities, loading } = useSelector((state) => state.teams);
   const dispatch = useDispatch();
 
-  const currentTeam = teams[0];
+  const currentTeamId =
+    userDetails?.owned_teams[0] || userDetails?.joined_teams[0];
+  const isTeamOwner = !!userDetails?.owned_teams[0];
 
   useEffect(() => {
-    if (!teams.length) {
-      dispatch(fetchTeams());
+    if (!team) {
+      dispatch(fetchTeam({ id: currentTeamId }));
     }
   }, []);
 
@@ -35,22 +35,23 @@ export default function useActivitiesHook() {
   }, [selectedDay]);
 
   useEffect(() => {
-    if (teams.length) {
+    if (team) {
       dispatch(
         fetchTeamActivities({
           date: formatDateToYYYYMMDD(selectedDay),
-          user_id: currentTeam.id,
+          user_id: team.id,
         })
       );
     }
-  }, [!!teams.length, selectedDay]);
+  }, [!!team, selectedDay]);
 
   return {
     selectedDay,
     setSelectedDay,
     teamLoading:
-      loading === "FETCH_TEAMS" || loading === "FETCH_TEAM_ACTIVITIES",
-    teams,
+      loading === "FETCH_TEAM" || loading === "FETCH_TEAM_ACTIVITIES",
+    team,
+    isTeamOwner,
     teamActivities,
     userActivities,
     userLoading: userLoading === "FETCH_USER_ACTIVITIES",

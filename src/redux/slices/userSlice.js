@@ -58,7 +58,7 @@ export const fetchUserByPin = createAsyncThunk(
 );
 
 export const fetchUserActivities = createAsyncThunk(
-  "teams/fetchUserActivities",
+  "user/fetchUserActivities",
   async (fetchPayload, thunkAPI) => {
     try {
       const { data } = await Axios.get(`${BASE_API_URL}/visits/`, {

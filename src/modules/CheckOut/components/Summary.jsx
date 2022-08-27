@@ -11,6 +11,7 @@ import {
   Link as ChakraLink,
   RadioGroup,
   Radio,
+  Image,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,15 +20,11 @@ import { convertMinutesToHHMMSS, separateWithComma } from "utils/helpers";
 
 export default function Summary({
   checkoutDetails,
-  currentCheckIn,
   currentUserPlan,
-  currentTeamPlan,
   method,
   setMethod,
   handleSubmitMethod,
 }) {
-  console.log(checkoutDetails);
-
   return (
     <Stack divider={<StackDivider />} pb={6} spacing={0}>
       <Stack color="blue.800" pb={4} px={6}>
@@ -44,7 +41,7 @@ export default function Summary({
             <Text fontWeight={500}>{checkoutDetails?.workstation?.name}</Text>
           </HStack>
 
-          <HStack>
+          <HStack align="flex-start">
             <Text fontWeight="bold" color="primary.500">
               Location:
             </Text>
@@ -65,38 +62,41 @@ export default function Summary({
             </Text>
           </HStack>
 
-          <HStack>
-            <Text fontWeight="bold" color="primary.500">
-              Amount:
-            </Text>
-            <Text fontWeight={500}>
-              {" "}
-              N
-              {separateWithComma(
-                checkoutDetails?.total_value_of_minutes_spent_in_naira
-              )}{" "}
-              (N
-              {separateWithComma(
-                checkoutDetails?.space_price_per_minute_at_the_time
-              )}
-              /min)
-            </Text>
-          </HStack>
+          {!currentUserPlan && (
+            <HStack>
+              <Text fontWeight="bold" color="primary.500">
+                Amount:
+              </Text>
+              <Text fontWeight={500}>
+                {" "}
+                N
+                {separateWithComma(
+                  checkoutDetails?.total_value_of_minutes_spent_in_naira
+                )}{" "}
+                (N
+                {separateWithComma(
+                  checkoutDetails?.space_price_per_minute_at_the_time
+                )}
+                /min)
+              </Text>
+            </HStack>
+          )}
 
           <Stack pt={6} pb={8}>
             <Text fontSize={20} fontWeight="bold" color="primary.500">
               Payment Methods
             </Text>
 
-            <RadioGroup onChange={setMethod} value={method}>
-              <Stack spacing={5}>
-                <Radio size="lg" value="PAYG_cash">
-                  Cash
-                </Radio>
-                <Radio size="lg" value="PAYG_card">
-                  Card
-                </Radio>
-                {/* {currentUserPlan && (
+            {!currentUserPlan && (
+              <RadioGroup onChange={setMethod} value={method}>
+                <Stack spacing={5}>
+                  <Radio size="lg" value="PAYG_cash">
+                    Cash
+                  </Radio>
+                  <Radio size="lg" value="PAYG_card">
+                    Card
+                  </Radio>
+                  {/* {currentUserPlan && (
                   <Radio size="lg" value="plan">
                     Plan Payment
                   </Radio>
@@ -106,8 +106,16 @@ export default function Summary({
                     Team Payment
                   </Radio>
                 )} */}
-              </Stack>
-            </RadioGroup>
+                </Stack>
+              </RadioGroup>
+            )}
+
+            {currentUserPlan && (
+              <HStack align="flex-start">
+                <Image w={6} mt={2} src="/illustrations/verified.svg" />
+                <Text>This payment will be covered by your active plan</Text>
+              </HStack>
+            )}
           </Stack>
         </Stack>
         <Button

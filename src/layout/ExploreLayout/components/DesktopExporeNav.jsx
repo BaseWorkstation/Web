@@ -23,7 +23,7 @@ export default function DesktopExporeNav() {
           <Logo w={90} />
 
           <HStack fontSize="lg" fontWeight={500} spacing={12}>
-            <Link href="https://trybase.co/teams">
+            <Link href="https://www.trybase.co/for-team">
               <ChakraLink>For teams</ChakraLink>
             </Link>
             <Link href="/">

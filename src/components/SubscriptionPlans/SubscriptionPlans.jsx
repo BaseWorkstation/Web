@@ -93,6 +93,7 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
           <Stack
             key={id}
             w="full"
+            maxW={320}
             border="1px solid"
             borderColor="gray.200"
             rounded={20}

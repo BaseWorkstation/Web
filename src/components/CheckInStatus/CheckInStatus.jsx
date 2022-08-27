@@ -27,7 +27,11 @@ export default function CheckInStatus() {
   // Then fetch the current check-in details
   useEffect(() => {
     if (userDetails?.check_in_status && !currentCheckIn) {
-      dispatch(fetchCurrentCheckIn());
+      dispatch(
+        fetchCurrentCheckIn({
+          workstation_id: userDetails?.current_visit?.workstation_id,
+        })
+      );
     }
   }, [!!userDetails]);
 
@@ -46,8 +50,7 @@ export default function CheckInStatus() {
                 fontSize={20}
                 textAlign="center"
               >
-                You're about to checkout from{" "}
-                {currentCheckIn?.workstation?.name}
+                You're about to checkout from {currentCheckIn?.name}
               </Text>
             </VStack>
             <Divider borderColor="gray.400" />

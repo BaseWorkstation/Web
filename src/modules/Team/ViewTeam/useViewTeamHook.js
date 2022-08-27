@@ -5,7 +5,7 @@ import {
   addMemberToTeam,
   deleteTeamMember,
   fetchTeamMembers,
-  fetchTeams,
+  fetchTeam,
 } from "redux/slices/teamSlice";
 import { toastError, toastSuccess } from "utils/helpers";
 
@@ -16,28 +16,31 @@ const initialMemberDetails = {
 export default function useViewTeamHook() {
   const [memberDetails, setMemberDetails] = useState(initialMemberDetails);
   const [memberToRemove, setMemberToRemove] = useState(null);
-  const { teams, teamMembers, loading } = useSelector((state) => state.teams);
+  const { team, teamMembers, loading } = useSelector((state) => state.teams);
+  const { userDetails } = useSelector((state) => state.user);
   const addMemberModalState = useDisclosure();
   const deleteMemberModalState = useDisclosure();
   const dispatch = useDispatch();
 
-  const currentTeam = teams[0];
+  const currentTeamId =
+    userDetails?.owned_teams[0] || userDetails?.joined_teams[0];
+  const isTeamOwner = !!userDetails?.owned_teams[0];
 
   useEffect(() => {
-    if (!teams.length) {
-      dispatch(fetchTeams());
+    if (!team) {
+      dispatch(fetchTeam({ id: currentTeamId }));
     }
   }, []);
 
   useEffect(() => {
-    if (!!teams.length) {
+    if (team) {
       dispatch(
         fetchTeamMembers({
-          team_id: currentTeam.id,
+          team_id: currentTeamId,
         })
       );
     }
-  }, [teams.length]);
+  }, [!!team]);
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -53,7 +56,7 @@ export default function useViewTeamHook() {
     try {
       await dispatch(
         addMemberToTeam({
-          team_id: currentTeam.id,
+          team_id: currentTeamId,
           emails: [
             {
               email_id: memberDetails.email,
@@ -82,7 +85,7 @@ export default function useViewTeamHook() {
     try {
       await dispatch(
         deleteTeamMember({
-          team_id: currentTeam.id,
+          team_id: currentTeamId,
           user_id: memberToRemove,
         })
       ).unwrap();
@@ -90,7 +93,7 @@ export default function useViewTeamHook() {
       toastSuccess("Team member has been successfully removed");
       dispatch(
         fetchTeamMembers({
-          team_id: currentTeam.id,
+          team_id: currentTeamId,
         })
       );
       deleteMemberModalState.onClose();
@@ -100,11 +103,11 @@ export default function useViewTeamHook() {
   };
 
   return {
-    teamLoading: loading === "FETCH_TEAMS" || loading === "FETCH_TEAM_MEMBERS",
+    teamLoading: loading === "FETCH_TEAM" || loading === "FETCH_TEAM_MEMBERS",
     isAddingMember: loading === "ADD_TEAM_MEMBER",
     isDeletingMember: loading === "DELETE_TEAM_MEMBER",
-    teams,
-    currentTeam,
+    currentTeam: team,
+    isTeamOwner,
     teamMembers,
     memberDetails,
     handleChange,

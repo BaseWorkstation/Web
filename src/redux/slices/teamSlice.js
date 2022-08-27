@@ -2,13 +2,13 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import Axios from "axios";
 import { BASE_API_URL } from "utils/constants";
 
-export const fetchTeams = createAsyncThunk(
-  "teams/fetchTeams",
+export const fetchTeam = createAsyncThunk(
+  "teams/fetchTeam",
   async (fetchPayload, thunkAPI) => {
     try {
       const {
         data: { data },
-      } = await Axios.get(`${BASE_API_URL}/teams`, {
+      } = await Axios.get(`${BASE_API_URL}/teams/${fetchPayload?.id}`, {
         params: fetchPayload,
         headers: {
           Authorization: `Bearer ${localStorage.getItem("base_acccess_token")}`,
@@ -187,7 +187,7 @@ export const deleteTeamMember = createAsyncThunk(
 const teamSlice = createSlice({
   name: "teams",
   initialState: {
-    teams: [],
+    team: null,
     teamActivities: { data: [] },
     teamMembers: { data: [], unregistered_members: [] },
     loading: "FETCH_TEAMS",
@@ -202,21 +202,21 @@ const teamSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchTeams.pending]: (state) => {
-      state.teams = [];
+    [fetchTeam.pending]: (state) => {
+      state.team = null;
       delete state.error;
       delete state.success;
-      state.loading = "FETCH_TEAMS";
+      state.loading = "FETCH_TEAM";
     },
-    [fetchTeams.fulfilled]: (state, action) => {
-      state.success = "FETCH_TEAMS";
-      state.teams = action.payload;
+    [fetchTeam.fulfilled]: (state, action) => {
+      state.success = "FETCH_TEAM";
+      state.team = action.payload;
       delete state.loading;
       delete state.error;
     },
-    [fetchTeams.rejected]: (state, { payload }) => {
+    [fetchTeam.rejected]: (state, { payload }) => {
       state.error = {
-        errorType: "FETCH_TEAMS",
+        errorType: "FETCH_TEAM",
       };
       delete state.loading;
     },
@@ -266,7 +266,7 @@ const teamSlice = createSlice({
     },
     [createTeam.fulfilled]: (state, action) => {
       state.success = "CREATE_TEAM";
-      state.teams.push(action.payload?.data);
+      state.team = action.payload?.data;
       delete state.loading;
       delete state.error;
     },
@@ -302,10 +302,8 @@ const teamSlice = createSlice({
     },
     [editTeam.fulfilled]: (state, action) => {
       state.success = "EDIT_TEAM";
-      const team = state.teams.find((team) => team.id === action.payload.id);
       // delete state.tempNote;
-      Object.assign(team, action.payload);
-      // state.teams = action.payload;
+      state.team = action.payload;
       delete state.loading;
       delete state.error;
     },
@@ -323,11 +321,8 @@ const teamSlice = createSlice({
     },
     [uploadTeamImage.fulfilled]: (state, action) => {
       state.success = "UPLOAD_TEAM_IMAGE";
-      const team = state.teams.find(
-        (team) => team.id === action.payload.fileable_id
-      );
 
-      team.logo = action.payload;
+      state.team.logo = action.payload;
       delete state.loading;
       delete state.error;
     },
@@ -342,15 +337,11 @@ const teamSlice = createSlice({
       delete state.error;
       delete state.success;
       state.loading = "DELETE_TEAM";
-      const position = state.teams.findIndex(
-        (team) => team.id === action.meta.arg
-      );
-      state.backupTeam = Object.assign({}, state.teams[position]);
       state.backupPosition = position;
     },
     [deleteTeam.fulfilled]: (state) => {
       state.success = "DELETE_TEAM";
-      state.teams.splice(state.backupPosition, 1);
+      state.team = null;
       delete state.backupTeam;
       delete state.backupPosition;
       delete state.loading;

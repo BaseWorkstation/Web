@@ -19,15 +19,16 @@ import { AiOutlineDelete } from "react-icons/ai";
 import DeleteMemberModal from "./DeleteMemberModal";
 
 export default function MembersTable({
+  isTeamOwner,
   teamMembers,
-  teams,
+  currentTeam,
   teamLoading,
   openDeleteMemberConfirmation,
   ...rest
 }) {
   if (teamLoading) return <Spinner />;
 
-  if (!teams.length) return <NoTeamView />;
+  if (!currentTeam) return <NoTeamView />;
 
   if (!teamMembers.data?.length && !teamMembers.unregistered_members?.length)
     return (
@@ -57,9 +58,15 @@ export default function MembersTable({
               <Th textTransform="capitalize" fontSize="md" color="primary.500">
                 Last Active
               </Th>
-              <Th textTransform="capitalize" fontSize="md" color="primary.500">
-                Actions
-              </Th>
+              {isTeamOwner && (
+                <Th
+                  textTransform="capitalize"
+                  fontSize="md"
+                  color="primary.500"
+                >
+                  Actions
+                </Th>
+              )}
             </Tr>
           </Thead>
           <Tbody>
@@ -70,19 +77,21 @@ export default function MembersTable({
                 </Td>
                 <Td py={8}>{member.email}</Td>
                 <Td py={8}>{member.last_active}</Td>
-                <Td py={8}>
-                  <Button
-                    fontWeight={500}
-                    colorScheme="default"
-                    color="red.400"
-                    variant="ghost"
-                    iconSpacing={2}
-                    leftIcon={<Icon as={AiOutlineDelete} fontSize={20} />}
-                    onClick={() => openDeleteMemberConfirmation(1)}
-                  >
-                    Remove User
-                  </Button>
-                </Td>
+                {isTeamOwner && (
+                  <Td py={8}>
+                    <Button
+                      fontWeight={500}
+                      colorScheme="default"
+                      color="red.400"
+                      variant="ghost"
+                      iconSpacing={2}
+                      leftIcon={<Icon as={AiOutlineDelete} fontSize={20} />}
+                      onClick={() => openDeleteMemberConfirmation(member.id)}
+                    >
+                      Remove User
+                    </Button>
+                  </Td>
+                )}
               </Tr>
             ))}
             {teamMembers.unregistered_members.map((member) => (
@@ -91,17 +100,19 @@ export default function MembersTable({
                 <Td py={8}>{member.email}</Td>
                 <Td py={8}>Pending Invite</Td>
                 <Td py={8}>
-                  <Button
-                    fontWeight={500}
-                    colorScheme="default"
-                    color="red.400"
-                    variant="ghost"
-                    iconSpacing={2}
-                    leftIcon={<Icon as={AiOutlineDelete} fontSize={20} />}
-                    onClick={() => openDeleteMemberConfirmation(1)}
-                  >
-                    Remove User
-                  </Button>
+                  {isTeamOwner && (
+                    <Button
+                      fontWeight={500}
+                      colorScheme="default"
+                      color="red.400"
+                      variant="ghost"
+                      iconSpacing={2}
+                      leftIcon={<Icon as={AiOutlineDelete} fontSize={20} />}
+                      onClick={() => openDeleteMemberConfirmation(member.id)}
+                    >
+                      Remove User
+                    </Button>
+                  )}
                 </Td>
               </Tr>
             ))}

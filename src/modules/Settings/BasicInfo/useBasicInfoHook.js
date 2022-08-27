@@ -2,14 +2,17 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { toastError, toastSuccess } from "utils/helpers";
 import { editUserDetails, uploadUserAvatar } from "redux/slices/userSlice";
-import { editTeam, fetchTeams, uploadTeamImage } from "redux/slices/teamSlice";
+import { editTeam, fetchTeam, uploadTeamImage } from "redux/slices/teamSlice";
 
 export default function useBasicInfoHook() {
   const { userDetails, loading: userLoading } = useSelector(
     (state) => state.user
   );
-  const { teams, loading: teamsLoading } = useSelector((state) => state.teams);
-  const currentTeam = teams[0];
+  const { team, loading: teamsLoading } = useSelector((state) => state.teams);
+
+  const currentTeamId =
+    userDetails?.owned_teams[0] || userDetails?.joined_teams[0];
+  const currentTeam = team;
 
   const [basicInfoDetails, setBasicInfoDetails] = useState({
     firstName: userDetails.first_name,
@@ -18,21 +21,23 @@ export default function useBasicInfoHook() {
     phone: userDetails.phone,
     teamName: currentTeam?.name,
     teamAddress: currentTeam?.address,
-    teamEmail: currentTeam?.address,
+    teamEmail: currentTeam?.email,
     teamPhone: currentTeam?.phone,
   });
   const dispatch = useDispatch();
 
   useEffect(() => {
     (async () => {
-      if (!teams.length) {
+      if (!team) {
         try {
-          const data = await dispatch(fetchTeams()).unwrap();
+          const data = await dispatch(
+            fetchTeam({ id: currentTeamId })
+          ).unwrap();
           setBasicInfoDetails((prev) => ({
             ...prev,
             teamName: data[0]?.name,
             teamAddress: data[0]?.address,
-            teamEmail: data[0]?.address,
+            teamEmail: data[0]?.email,
             teamPhone: data[0]?.phone,
           }));
         } catch (error) {}

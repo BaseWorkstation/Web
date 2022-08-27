@@ -29,7 +29,8 @@ export default function AccountActivities() {
     selectedDay,
     setSelectedDay,
     teamLoading,
-    teams,
+    team,
+    isTeamOwner,
     teamActivities,
     userActivities,
     userLoading,
@@ -101,15 +102,20 @@ export default function AccountActivities() {
             >
               My Recent Activity
             </Tab>
-            <Tab
-              rounded={8}
-              color="gray.500"
-              fontSize={["md", "md", "lg"]}
-              px={[3, 8]}
-              _selected={{ bg: "rgba(0, 171, 231, 0.15);", color: "blue.800" }}
-            >
-              My Team Activity
-            </Tab>
+            {isTeamOwner && (
+              <Tab
+                rounded={8}
+                color="gray.500"
+                fontSize={["md", "md", "lg"]}
+                px={[3, 8]}
+                _selected={{
+                  bg: "rgba(0, 171, 231, 0.15);",
+                  color: "blue.800",
+                }}
+              >
+                My Team Activity
+              </Tab>
+            )}
           </TabList>
 
           <TabPanels>
@@ -119,13 +125,15 @@ export default function AccountActivities() {
                 userActivities={userActivities}
               />
             </TabPanel>
-            <TabPanel px={0} pt={[50, 8]}>
-              <TeamActivities
-                teamLoading={teamLoading}
-                teams={teams}
-                teamActivities={teamActivities}
-              />
-            </TabPanel>
+            {isTeamOwner && (
+              <TabPanel px={0} pt={[50, 8]}>
+                <TeamActivities
+                  teamLoading={teamLoading}
+                  team={team}
+                  teamActivities={teamActivities}
+                />
+              </TabPanel>
+            )}
           </TabPanels>
         </Tabs>
       </Stack>

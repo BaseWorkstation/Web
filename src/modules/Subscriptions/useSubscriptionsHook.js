@@ -2,19 +2,22 @@ import Router from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addPaymentMethod } from "redux/slices/paymentSlice";
-import { fetchTeams } from "redux/slices/teamSlice";
+import { fetchTeam } from "redux/slices/teamSlice";
 import { toastError, toastSuccess } from "utils/helpers";
 
 export default function useSubscriptionsHook() {
   const { userDetails } = useSelector((state) => state.user);
-  const { teams } = useSelector((state) => state.teams);
+  const { team } = useSelector((state) => state.teams);
   const dispatch = useDispatch();
 
-  const currentTeam = teams[0];
+  const currentTeamId =
+    userDetails?.owned_teams[0] || userDetails?.joined_teams[0];
+  const currentTeam = team;
+  const isTeamOwner = !!userDetails?.owned_teams[0];
 
   useEffect(() => {
-    if (!teams.length) {
-      dispatch(fetchTeams());
+    if (!team) {
+      dispatch(fetchTeam({ id: currentTeamId }));
     }
   }, []);
 
@@ -69,6 +72,7 @@ export default function useSubscriptionsHook() {
   };
 
   return {
+    isTeamOwner,
     currentUserPlan,
     handleChooseUserPlan,
     currentTeamPlan,

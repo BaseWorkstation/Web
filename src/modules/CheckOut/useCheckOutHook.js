@@ -12,22 +12,24 @@ import {
   fetchSpaceServices,
   saveCheckoutPayment,
 } from "redux/slices/spaceSlice";
-import { fetchTeams } from "redux/slices/teamSlice";
 import { fetchUserByPin } from "redux/slices/userSlice";
 import { toastError, toastSuccess } from "utils/helpers";
 
 export default function useCheckOutHook() {
   const [stage, setStage] = useState("CONFIRM_PIN");
   const [pin, setPin] = useState("");
-  const { teams } = useSelector((state) => state.teams);
-  const [method, setMethod] = useState("");
+  const { userDetails } = useSelector((state) => state.user);
+  const currentUserPlan = userDetails?.payment_methods?.find(
+    ({ method }) => method === "plan"
+  );
+
+  const [method, setMethod] = useState(currentUserPlan ? "plan" : "");
   const [checkoutDetails, setCheckoutDetails] = useState(null);
   const {
     spaceServices: workspaceServices,
     currentCheckIn,
     loading,
   } = useSelector((state) => state.spaces);
-  const { userDetails } = useSelector((state) => state.user);
   const [amount, setAmount] = useState("");
   const [reference, setReference] = useState("");
 
@@ -42,7 +44,6 @@ export default function useCheckOutHook() {
   const initializePayment = usePaystackPayment(config);
 
   const dispatch = useDispatch();
-  const currentTeam = teams[0];
 
   const onSuccess = ({ reference }) => {
     savePayment(reference);
@@ -60,28 +61,18 @@ export default function useCheckOutHook() {
   }, [reference]);
 
   useEffect(() => {
-    if (!teams.length) {
-      dispatch(fetchTeams());
-    }
     if (userDetails?.check_in_status) {
       handleFetchCheckIn();
     }
   }, []);
 
   const handleFetchCheckIn = async () => {
-    try {
-      await dispatch(fetchCurrentCheckIn()).unwrap();
-      // setCheckoutDetails(data?.workstation);
-    } catch (error) {}
+    await dispatch(
+      fetchCurrentCheckIn({
+        workstation_id: userDetails?.current_visit?.workstation_id,
+      })
+    ).unwrap();
   };
-
-  const currentUserPlan = userDetails?.payment_methods?.find(
-    ({ method }) => method === "plan"
-  )?.plan;
-
-  const currentTeamPlan = currentTeam?.payment_methods?.find(
-    ({ method }) => method === "plan"
-  )?.plan;
 
   const handleSubmitMethod = async () => {
     setStage("CONFIRM_OTP");
@@ -124,10 +115,10 @@ export default function useCheckOutHook() {
       ).unwrap();
       console.log(data);
 
-      if (method === "PAYG_cash") {
-        savePayment();
-      } else if (method === "PAYG_card") {
+      if (method === "PAYG_card") {
         openPaymentWindow();
+      } else {
+        savePayment();
       }
     } catch (error) {
       toastError(null, error);
@@ -150,17 +141,7 @@ export default function useCheckOutHook() {
     if (method === "plan") {
       apiPayload = {
         ...apiPayload,
-        payer: "User",
-        payment_method_type: "plan",
         payment_method_id: currentUserPlan?.id,
-      };
-    }
-
-    if (method === "team") {
-      apiPayload = {
-        ...apiPayload,
-        payer: "Team",
-        team_id: currentTeam?.id,
       };
     }
 
@@ -178,7 +159,6 @@ export default function useCheckOutHook() {
     checkoutDetails,
     currentCheckIn,
     currentUserPlan,
-    currentTeamPlan,
     pin,
     setPin,
     method,

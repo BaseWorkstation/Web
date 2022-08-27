@@ -19,11 +19,11 @@ export default function ViewTeam() {
       >
         <HStack justify="space-between" color="blue.800">
           <Heading fontSize="xl">
-            Manage Users {data.currentTeam?.name ? "-" : ""}{" "}
-            {data.currentTeam?.name}
+            {data.isTeamOwner ? "Manage" : "View"} Users{" "}
+            {data.currentTeam?.name ? "-" : ""} {data.currentTeam?.name}
           </Heading>
 
-          {data.teams.length && <AddMember {...data} />}
+          {data.currentTeam && data.isTeamOwner && <AddMember {...data} />}
         </HStack>
 
         <Box pt={8}>

@@ -19,10 +19,10 @@ import Moment from "react-moment";
 import "moment-timezone";
 import { separateWithComma } from "utils/helpers";
 
-export default function TeamActivities({ teamLoading, teams, teamActivities }) {
+export default function TeamActivities({ teamLoading, team, teamActivities }) {
   if (teamLoading) return <Spinner />;
 
-  if (!teams.length) return <NoTeamView />;
+  if (!team) return <NoTeamView />;
 
   if (!teamActivities.data.length)
     return (
