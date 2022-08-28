@@ -38,8 +38,9 @@ export default function useActivitiesHook() {
     if (team) {
       dispatch(
         fetchTeamActivities({
-          date: formatDateToYYYYMMDD(selectedDay),
-          user_id: team.id,
+          from_date: formatDateToYYYYMMDD(selectedDay),
+          to_date: formatDateToYYYYMMDD(selectedDay),
+          team_id: team.id,
         })
       );
     }

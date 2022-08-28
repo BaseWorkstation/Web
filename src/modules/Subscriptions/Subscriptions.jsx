@@ -18,6 +18,8 @@ export default function Subscriptions() {
     currentUserPlan,
     handleChooseUserPlan,
     currentTeamPlan,
+    teamLoading,
+    teamMembers,
     handleChooseTeamPlan,
   } = useSubscriptionsHook();
 
@@ -74,8 +76,10 @@ export default function Subscriptions() {
             </TabPanel>
             {isTeamOwner && (
               <TabPanel px={0} pt={[5, 5]}>
-                <HStack justify="center">
+                <HStack w="full" justify="center">
                   <TeamSubscription
+                    teamLoading={teamLoading}
+                    teamMembers={teamMembers}
                     currentPlan={currentTeamPlan}
                     handleChoosePlan={handleChooseTeamPlan}
                   />
