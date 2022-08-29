@@ -1,8 +1,17 @@
-import { Box, Circle, HStack, Image, Stack, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Circle,
+  HStack,
+  Icon,
+  Image,
+  Stack,
+  Text,
+} from "@chakra-ui/react";
 import Link from "next/link";
 import moment from "moment";
 import "moment-timezone";
 import { checkIfCurrentTimeIsBetweenRange } from "utils/helpers";
+import { FiArrowUpRight } from "react-icons/fi";
 
 export default function SpaceCard({ space }) {
   const {
@@ -20,6 +29,7 @@ export default function SpaceCard({ space }) {
     default_service,
     logo,
     qr_code_path,
+    base_cheaper_compared_to_workstation,
   } = space;
 
   const isOpen = checkIfCurrentTimeIsBetweenRange(open_time, close_time);
@@ -40,12 +50,13 @@ export default function SpaceCard({ space }) {
         <Box
           w={[131, 151, 210]}
           bgSize={logo ? "cover" : "60%"}
+          flexShrink={0}
           rounded={["xl", "xl", "2xl"]}
           bgRepeat="no-repeat"
           bgPos="center"
           bgImage={`url(${logo?.file_path || "/images/spaceholder.png"})`}
         />
-        <Stack justify="center" py={[3, 3, 3, 0]} pr={2}>
+        <Stack justify="center" spacing={[0, 0, 2]} py={[3, 3, 3, 0]} pr={2}>
           <Text fontSize={["md", "md", "lg"]} color="primary.900">
             {name}
           </Text>
@@ -67,6 +78,15 @@ export default function SpaceCard({ space }) {
             <Text textTransform="capitalize" fontWeight={500}>
               {city}, {state}
             </Text>
+            <HStack spacing={1} align="flex-start">
+              <Icon mt={0.5} color="green.400" as={FiArrowUpRight} />
+              <Text fontWeight={500} fontSize={["xs", "xs", "sm"]}>
+                <Box as="span" color="green.400">
+                  {base_cheaper_compared_to_workstation}%
+                </Box>{" "}
+                cheaper with base
+              </Text>
+            </HStack>
           </Stack>
         </Stack>
       </HStack>

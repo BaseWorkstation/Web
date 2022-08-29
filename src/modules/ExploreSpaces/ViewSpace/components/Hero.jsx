@@ -3,12 +3,14 @@ import {
   Circle,
   Heading,
   HStack,
+  Icon,
   IconButton,
   Image,
   Show,
   Stack,
   Text,
 } from "@chakra-ui/react";
+import { FiArrowUpRight } from "react-icons/fi";
 import { RiArrowLeftLine, RiArrowRightLine } from "react-icons/ri";
 import Slider from "react-slick";
 import { checkIfCurrentTimeIsBetweenRange } from "utils/helpers";
@@ -165,6 +167,15 @@ export default function Hero({ currentSpace, spaceServices }) {
                 </Text>
               </HStack>
             </HStack>
+            <HStack spacing={1} align="flex-start">
+              <Icon mt={0.5} color="green.400" as={FiArrowUpRight} />
+              <Text fontWeight={500} fontSize={["xs", "xs", "sm"]}>
+                <Box as="span" color="green.400">
+                  {currentSpace?.base_cheaper_compared_to_workstation}%
+                </Box>{" "}
+                cheaper with base
+              </Text>
+            </HStack>
           </Stack>
         </Show>
 
@@ -210,6 +221,15 @@ export default function Hero({ currentSpace, spaceServices }) {
               <Circle size={1.5} bg={isOpen ? "green.400" : "red.600"} />
               <Text fontSize="xs" fontWeight="bold" color="gray.500">
                 {isOpen ? "OPEN" : "CLOSED"}
+              </Text>
+            </HStack>
+            <HStack spacing={1} align="flex-start">
+              <Icon mt={0.5} color="green.400" as={FiArrowUpRight} />
+              <Text fontWeight={500} fontSize={["xs", "xs", "sm"]}>
+                <Box as="span" color="green.400">
+                  {currentSpace?.base_cheaper_compared_to_workstation}%
+                </Box>{" "}
+                cheaper with base
               </Text>
             </HStack>
           </Stack>
