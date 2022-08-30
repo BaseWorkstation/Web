@@ -29,6 +29,7 @@ export default function ListSpaces() {
     setSearchValue,
     debouncedOnChange,
     resultCount,
+    isAlreadyCheckedIn,
     selectedSpace,
     setSelectedSpace,
   } = useListSpacesHook();
@@ -69,18 +70,20 @@ export default function ListSpaces() {
             >
               <option value="Lagos">Lagos</option>
             </Select>
-            <Show below="md">
-              <Link href="/check-in">
-                <Button
-                  fontWeight={500}
-                  colorScheme="primary"
-                  size="lg"
-                  w={152}
-                >
-                  Check In
-                </Button>
-              </Link>
-            </Show>
+            {!isAlreadyCheckedIn && (
+              <Show below="md">
+                <Link href="/check-in">
+                  <Button
+                    fontWeight={500}
+                    colorScheme="primary"
+                    size="lg"
+                    w={152}
+                  >
+                    Check In
+                  </Button>
+                </Link>
+              </Show>
+            )}
           </HStack>
 
           <Show below="md">

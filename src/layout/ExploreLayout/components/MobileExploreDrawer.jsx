@@ -23,7 +23,7 @@ export default function MobileExploreDrawer({ isOpen, onToggle }) {
   const { userDetails } = useSelector((state) => state.user);
 
   return (
-    <Drawer size="full" isOpen={isOpen} placement="right">
+    <Drawer size="xs" isOpen={isOpen} onClose={onToggle} placement="right">
       <DrawerOverlay />
       <DrawerContent p={0}>
         <DrawerHeader px={5} pt={10}>

@@ -29,9 +29,9 @@ export default function DesktopExporeNav() {
             <Link href="/">
               <ChakraLink color="primary.500">Explore spaces</ChakraLink>
             </Link>
-            <Link href="/spaces">
+            {/* <Link href="/spaces">
               <ChakraLink>List my space</ChakraLink>
-            </Link>
+            </Link> */}
           </HStack>
 
           {userDetails && <UserMenu />}

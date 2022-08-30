@@ -1,4 +1,5 @@
 import { Center, Stack, VStack } from "@chakra-ui/react";
+import HowItWorks from "components/HowItWorks/HowItWorks";
 import { Logo } from "components/Logo";
 import ChooseService from "./components/ChooseService";
 import ConfirmPin from "./components/ConfirmPin";
@@ -26,42 +27,46 @@ export default function CheckIn() {
       <VStack w="full" spacing={16}>
         <Logo />
 
-        <VStack w="full" spacing={8}>
-          <Stack
-            w="full"
-            maxW={["full", "sm"]}
-            bg="white"
-            border="1px solid"
-            borderColor="gray.100"
-            rounded={20}
-            pt={9}
-            pb={6}
-          >
-            {stage === "SCAN_QR" && (
-              <ScanQR handleScanResult={handleScanResult} />
-            )}
+        <VStack>
+          <HowItWorks />
 
-            {stage === "CONFIRM_PIN" && (
-              <ConfirmPin
-                workspace={workspace}
-                pin={pin}
-                setPin={setPin}
-                handleSubmitPin={handleSubmitPin}
-                forgotPinDisclosure={forgotPinDisclosure}
-                handleRequestPin={handleRequestPin}
-              />
-            )}
+          <VStack w="full" spacing={8}>
+            <Stack
+              w="full"
+              maxW={["full", "sm"]}
+              bg="white"
+              border="1px solid"
+              borderColor="gray.100"
+              rounded={20}
+              pt={9}
+              pb={6}
+            >
+              {stage === "SCAN_QR" && (
+                <ScanQR handleScanResult={handleScanResult} />
+              )}
 
-            {stage === "CHOOSE_SERVICE" && (
-              <ChooseService
-                workspaceServices={workspaceServices}
-                handleSubmitService={handleSubmitService}
-                isCheckingIn={isCheckingIn}
-              />
-            )}
+              {stage === "CONFIRM_PIN" && (
+                <ConfirmPin
+                  workspace={workspace}
+                  pin={pin}
+                  setPin={setPin}
+                  handleSubmitPin={handleSubmitPin}
+                  forgotPinDisclosure={forgotPinDisclosure}
+                  handleRequestPin={handleRequestPin}
+                />
+              )}
 
-            {stage === "SHOW_ATTENDANT" && <ShowAttendant />}
-          </Stack>
+              {stage === "CHOOSE_SERVICE" && (
+                <ChooseService
+                  workspaceServices={workspaceServices}
+                  handleSubmitService={handleSubmitService}
+                  isCheckingIn={isCheckingIn}
+                />
+              )}
+
+              {stage === "SHOW_ATTENDANT" && <ShowAttendant />}
+            </Stack>
+          </VStack>
         </VStack>
       </VStack>
     </Center>

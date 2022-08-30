@@ -7,6 +7,7 @@ export default function useListSpacesHook() {
   const [searchValue, setSearchValue] = useState("");
   const [selectedSpace, setSelectedSpace] = useState(null);
   const { spaces, loading } = useSelector((state) => state.spaces);
+  const { userDetails } = useSelector((state) => state.user);
   const dispatch = useDispatch();
 
   const { data, links, meta } = spaces;
@@ -61,6 +62,7 @@ export default function useListSpacesHook() {
     searchValue,
     setSearchValue,
     resultCount: meta?.total,
+    isAlreadyCheckedIn: userDetails?.check_in_status,
     selectedSpace,
     setSelectedSpace,
   };

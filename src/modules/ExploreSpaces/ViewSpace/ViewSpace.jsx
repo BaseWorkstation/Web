@@ -6,6 +6,8 @@ import {
   HStack,
   Show,
   Stack,
+  Text,
+  VStack,
 } from "@chakra-ui/react";
 import Spinner from "components/Spinner/Spinner";
 import ExploreLayout from "layout/ExploreLayout/ExploreLayout";
@@ -47,6 +49,7 @@ export default function ViewSpace() {
           spacing={[6, 6, 12]}
           mt={[6, 12, 67]}
           px={[0, 0, "5%"]}
+          pb={[40, 40, 0]}
           w="full"
           justify="center"
           align="center"
@@ -90,7 +93,23 @@ export default function ViewSpace() {
 
         <Show below="md">
           {!isAlreadyCheckedIn && (
-            <HStack pos="fixed" bottom={28} left={0} w="full" justify="center">
+            <VStack
+              pb={24}
+              pt={4}
+              pos="fixed"
+              roundedTop={16}
+              bg="white"
+              border="1px solid"
+              borderColor="gray.300"
+              shadow="md"
+              bottom={0}
+              left={0}
+              w="full"
+              justify="center"
+            >
+              <Text fontSize={30} fontWeight={500} pb={3} textAlign="center">
+                Already at <br /> a workspace?
+              </Text>
               <Flex w="fit-content">
                 <Link href="/check-in">
                   <Button w={250} h={57} colorScheme="primary">
@@ -98,7 +117,7 @@ export default function ViewSpace() {
                   </Button>
                 </Link>
               </Flex>
-            </HStack>
+            </VStack>
           )}
         </Show>
       </Box>

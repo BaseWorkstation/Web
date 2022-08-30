@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchPaymentPlans } from "redux/slices/paymentSlice";
 
 const options = [
-  {
-    name: "Add a card (P.A.Y.G)",
-    href: "/settings/payment/add/card",
-  },
+  // {
+  //   name: "Add a card (P.A.Y.G)",
+  //   href: "/settings/payment/add/card",
+  // },
   {
     name: "Subscribe to a plan",
     href: "/settings/payment/add/plan",

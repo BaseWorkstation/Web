@@ -131,45 +131,59 @@ export default function TeamSubscription({
             </Tr>
           </Thead>
           <Tbody>
-            {teamMembers.data.map((member) => (
-              <Tr key={member.id}>
-                <Td textTransform="capitalize" py={4} pl={0}>
-                  {member.first_name} {member.last_name}
-                </Td>
-                <Td py={4}>{member.email}</Td>
-                <Td py={4}>None</Td>
-                <Td py={4}>
-                  <Menu gutter={2}>
-                    <MenuButton
-                      as={Button}
-                      onClick={() => setSelectedMember(member)}
-                      fontWeight={500}
-                      colorScheme="default"
-                      color="primary.500"
-                      isLoading={isLoading}
-                      variant="ghost"
-                      iconSpacing={2}
-                      rightIcon={<ChevronDownIcon />}
-                    >
-                      Buy Plan
-                    </MenuButton>
-                    <MenuList>
-                      {paymentPlans.map((plan) => (
-                        <MenuItem
-                          onClick={() => {
-                            setSelectedPlan(plan);
-                            openPaymentWindow();
-                          }}
-                          key={plan.id}
-                        >
-                          {plan.name}
-                        </MenuItem>
-                      ))}
-                    </MenuList>
-                  </Menu>
-                </Td>
-              </Tr>
-            ))}
+            {teamMembers.data.map((member) => {
+              const memberPlan = member?.payment_methods?.find(
+                ({ method }) => method === "plan"
+              )?.plan;
+
+              return (
+                <Tr key={member.id}>
+                  <Td textTransform="capitalize" py={4} pl={0}>
+                    {member.first_name} {member.last_name}
+                  </Td>
+                  <Td py={4}>{member.email}</Td>
+                  <Td py={4}>
+                    {memberPlan ? (
+                      <Box as="span" fontWeight="bold" color="primary.500">
+                        {memberPlan?.name}
+                      </Box>
+                    ) : (
+                      "None"
+                    )}
+                  </Td>
+                  <Td py={4}>
+                    <Menu gutter={2}>
+                      <MenuButton
+                        as={Button}
+                        onClick={() => setSelectedMember(member)}
+                        fontWeight={500}
+                        colorScheme="default"
+                        color="primary.500"
+                        isLoading={isLoading}
+                        variant="ghost"
+                        iconSpacing={2}
+                        rightIcon={<ChevronDownIcon />}
+                      >
+                        Buy Plan
+                      </MenuButton>
+                      <MenuList>
+                        {paymentPlans.map((plan) => (
+                          <MenuItem
+                            onClick={() => {
+                              setSelectedPlan(plan);
+                              openPaymentWindow();
+                            }}
+                            key={plan.id}
+                          >
+                            {plan.name}
+                          </MenuItem>
+                        ))}
+                      </MenuList>
+                    </Menu>
+                  </Td>
+                </Tr>
+              );
+            })}
           </Tbody>
         </Table>
       </TableContainer>

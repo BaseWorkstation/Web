@@ -90,9 +90,9 @@ export default function Summary({
             {!currentUserPlan && (
               <RadioGroup onChange={setMethod} value={method}>
                 <Stack spacing={5}>
-                  <Radio size="lg" value="PAYG_cash">
+                  {/* <Radio size="lg" value="PAYG_cash">
                     Cash
-                  </Radio>
+                  </Radio> */}
                   <Radio size="lg" value="PAYG_card">
                     Card
                   </Radio>
