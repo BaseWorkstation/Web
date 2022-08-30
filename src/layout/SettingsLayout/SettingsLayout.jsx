@@ -15,7 +15,7 @@ import { BsChevronDown, BsChevronRight } from "react-icons/bs";
 
 const settingsLinks = [
   { name: "Basic information", href: "/account/settings" },
-  { name: "Manage card", href: "/account/settings/card" },
+  // { name: "Manage card", href: "/account/settings/card" },
   { name: "Change password", href: "/account/settings/password" },
 ];
 

@@ -25,7 +25,7 @@ export default function BillingRate({ rate }) {
         </Stack>
       </HStack>
 
-      {price_per_hour && (
+      {/* {price_per_hour && (
         <HStack align="flex-start" spacing={5}>
           <Icon as={AiOutlineClockCircle} color="primary.500" fontSize={21} />
           <Stack spacing={[1, 1, 0]}>
@@ -40,7 +40,7 @@ export default function BillingRate({ rate }) {
             )}
           </Stack>
         </HStack>
-      )}
+      )} */}
     </Stack>
   );
 }

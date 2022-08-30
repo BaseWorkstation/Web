@@ -11,6 +11,7 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import HowItWorks from "components/HowItWorks/HowItWorks";
 import Spinner from "components/Spinner/Spinner";
 import ExploreLayout from "layout/ExploreLayout/ExploreLayout";
 import Link from "next/link";
@@ -133,6 +134,10 @@ export default function ListSpaces() {
               </HStack>
 
               <Stack spacing={8}>
+                <Flex maxW={["full"]}>
+                  <HowItWorks />
+                </Flex>
+
                 {spaces.map((space) => (
                   <SpaceCard key={space.id} space={space} />
                 ))}

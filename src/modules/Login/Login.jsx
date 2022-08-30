@@ -19,6 +19,7 @@ import { Logo } from "components/Logo";
 import React from "react";
 import Link from "next/link";
 import useLoginHook from "./useLoginHook";
+import HowItWorks from "components/HowItWorks/HowItWorks";
 
 export default function Login({ previousRoute }) {
   const {
@@ -36,6 +37,9 @@ export default function Login({ previousRoute }) {
     <Center bg="gray.50" minH="100vh" py={[16, 20]}>
       <VStack w="full" spacing={16}>
         <Logo notLinked />
+        <Flex maxW={["full", 400]}>
+          <HowItWorks />
+        </Flex>
 
         <VStack w="full" spacing={8}>
           <Stack
