@@ -7,7 +7,7 @@ import {
 } from "react-google-maps";
 
 function Map({ coordinates }) {
-  const [lat, lng] = coordinates.split(", ").map((str) => {
+  const [lat, lng] = coordinates.split(/(?:,| )+/).map((str) => {
     return Number(str);
   });
 

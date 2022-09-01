@@ -46,7 +46,7 @@ export default function useListSpacesHook() {
 
   const spacesWithFormattedCoordinates = data.map((space) => {
     const { coordinates } = space;
-    const [lat, lng] = coordinates.split(", ").map((str) => {
+    const [lat, lng] = coordinates.split(/(?:,| )+/).map((str) => {
       return Number(str);
     });
 
