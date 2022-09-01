@@ -98,6 +98,14 @@ export default function useBasicInfoHook() {
     if (!imageFile) {
       return;
     }
+
+    const imageSizeInMB = imageFile.size / 1024 / 1024;
+
+    if (imageSizeInMB > 5) {
+      toastError("Please upload an image that is less than 5MB", null, " ");
+      return;
+    }
+
     const formData = new FormData();
     // append the details of the form data
     formData.append("upload_category", "user_avatar");
@@ -119,6 +127,14 @@ export default function useBasicInfoHook() {
     if (!imageFile) {
       return;
     }
+
+    const imageSizeInMB = imageFile.size / 1024 / 1024;
+
+    if (imageSizeInMB > 5) {
+      toastError("Please upload an image that is less than 5MB", null, " ");
+      return;
+    }
+
     const formData = new FormData();
     // append the details of the form data
     formData.append("upload_category", "team_logo");

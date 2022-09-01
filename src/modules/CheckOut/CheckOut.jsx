@@ -24,6 +24,8 @@ export default function CheckIn() {
     isCheckedIn,
     isCheckingOut,
     isSavingPayment,
+    forgotPinDisclosure,
+    handleRequestPin,
   } = useCheckOutHook();
 
   if (!isCheckedIn)
@@ -61,6 +63,8 @@ export default function CheckIn() {
                 pin={pin}
                 setPin={setPin}
                 handleSubmitPin={handleSubmitPin}
+                forgotPinDisclosure={forgotPinDisclosure}
+                handleRequestPin={handleRequestPin}
               />
             )}
 

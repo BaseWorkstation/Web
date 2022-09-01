@@ -15,7 +15,11 @@ function Map({ spaces, selectedSpace, setSelectedSpace }) {
     Router.push(`spaces/${spaceId}`);
   };
 
-  const defaultSpace = spaces[0]?.coordinates;
+  const spacesToShow = [...spaces].filter(
+    ({ coordinates }) => coordinates?.lat && coordinates?.lng
+  );
+
+  const defaultSpace = spacesToShow[0]?.coordinates;
 
   return (
     <GoogleMap
@@ -23,7 +27,7 @@ function Map({ spaces, selectedSpace, setSelectedSpace }) {
       center={selectedSpace || defaultSpace}
       defaultCenter={defaultSpace}
     >
-      {spaces.map((space) => (
+      {spacesToShow.map((space) => (
         <Marker
           key={space.id}
           position={space.coordinates}

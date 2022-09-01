@@ -13,7 +13,7 @@ import Router from "next/router";
 
 export default function ShowPin({ basePin }) {
   const goToPaymentMethod = () => {
-    Router.push("/settings/payment/add");
+    window.location.href = "/settings/payment/add";
   };
 
   return (

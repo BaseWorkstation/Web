@@ -39,7 +39,7 @@ export default function TeamInfo({
           <Button
             isLoading={isEditingLogo}
             loadingText="Updating..."
-            variant="link"
+            size="sm"
             fontWeight={500}
           >
             Change Picture

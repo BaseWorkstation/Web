@@ -27,7 +27,7 @@ export default function useCreateTeamHook() {
     try {
       await dispatch(createTeam({ name: teamDetails.name })).unwrap();
       toastSuccess("Team created successfully!");
-      window.location.href = "/account/team";
+      location.href = "/account/team";
     } catch (error) {
       toastError(null, error);
     }

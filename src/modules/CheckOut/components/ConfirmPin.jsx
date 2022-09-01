@@ -12,6 +12,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useSelector } from "react-redux";
+import ForgotPin from "./ForgotPin";
 
 export default function ConfirmPin({
   workspace,
@@ -19,6 +20,8 @@ export default function ConfirmPin({
   setPin,
   handleSubmitPin,
   isCheckingOut,
+  forgotPinDisclosure,
+  handleRequestPin,
 }) {
   return (
     <Stack divider={<StackDivider />} pb={6} spacing={0}>
@@ -72,6 +75,22 @@ export default function ConfirmPin({
         >
           Check Out
         </Button>
+        <Stack pt={16} spacing={4}>
+          <Text fontSize="xs" textAlign="center">
+            Forgot pin?{" "}
+            <ChakraLink
+              onClick={forgotPinDisclosure.onOpen}
+              fontWeight="semibold"
+              color="primary.500"
+            >
+              Click here
+            </ChakraLink>
+          </Text>
+          <ForgotPin
+            forgotPinDisclosure={forgotPinDisclosure}
+            handleRequestPin={handleRequestPin}
+          />
+        </Stack>
       </VStack>
     </Stack>
   );

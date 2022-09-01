@@ -62,7 +62,7 @@ export default function ViewSpace() {
             align="stretch"
           >
             <Stack w="full" spacing={[6, 6, 12]}>
-              <Amenities amenities={currentSpace.amenities} />
+              {/* <Amenities amenities={currentSpace.amenities} /> */}
               <AboutBase
                 name={currentSpace.name}
                 about={currentSpace.about}

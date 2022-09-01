@@ -67,6 +67,7 @@ export default function useCheckInHook() {
         })
       ).unwrap();
       toastSuccess("Your base pin has been sent to the email you provided.");
+      forgotPinDisclosure.onClose();
     } catch (error) {
       toastError(null, error);
     }

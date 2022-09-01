@@ -37,7 +37,7 @@ export default function UserInfo({
           <Button
             isLoading={isEditingLogo}
             loadingText="Updating..."
-            variant="link"
+            size="sm"
             fontWeight={500}
           >
             Change Picture

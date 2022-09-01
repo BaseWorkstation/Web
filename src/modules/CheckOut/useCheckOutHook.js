@@ -1,3 +1,4 @@
+import { useDisclosure } from "@chakra-ui/react";
 import { nanoid } from "@reduxjs/toolkit";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -12,7 +13,7 @@ import {
   fetchSpaceServices,
   saveCheckoutPayment,
 } from "redux/slices/spaceSlice";
-import { fetchUserByPin } from "redux/slices/userSlice";
+import { fetchUserByPin, requestUserPin } from "redux/slices/userSlice";
 import { toastError, toastSuccess } from "utils/helpers";
 
 export default function useCheckOutHook() {
@@ -42,6 +43,7 @@ export default function useCheckOutHook() {
     lastname: userDetails?.last_name,
   };
   const initializePayment = usePaystackPayment(config);
+  const forgotPinDisclosure = useDisclosure();
 
   const dispatch = useDispatch();
 
@@ -154,6 +156,22 @@ export default function useCheckOutHook() {
     }
   };
 
+  const handleRequestPin = async (email) => {
+    if (!email.trim()) return null;
+
+    try {
+      await dispatch(
+        requestUserPin({
+          email,
+        })
+      ).unwrap();
+      toastSuccess("Your base pin has been sent to the email you provided.");
+      forgotPinDisclosure.onClose();
+    } catch (error) {
+      toastError(null, error);
+    }
+  };
+
   return {
     stage,
     checkoutDetails,
@@ -171,5 +189,7 @@ export default function useCheckOutHook() {
     isConfirmingOTP: loading === "CONFIRM_CHECKOUT_OTP",
     isSavingPayment: loading === "SAVE_CHECKOUT_PAYMENT",
     handleSubmitOTP,
+    forgotPinDisclosure,
+    handleRequestPin,
   };
 }

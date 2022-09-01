@@ -38,7 +38,7 @@ export default function AccountHeader() {
         </Text>
       </Stack>
       <HStack spacing={[4, 8]}>
-        <Avatar
+        {/* <Avatar
           w={9}
           h={9}
           cursor="pointer"
@@ -55,7 +55,7 @@ export default function AccountHeader() {
           >
             4
           </AvatarBadge>
-        </Avatar>
+        </Avatar> */}
         <UserMenu />
       </HStack>
     </HStack>

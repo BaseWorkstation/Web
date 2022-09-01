@@ -16,7 +16,7 @@ import MobileNav from "../../shared/MobileNav";
 
 export default function MobileAccountDrawer({ isOpen, onToggle }) {
   return (
-    <Drawer size="full" isOpen={isOpen} placement="right">
+    <Drawer size="xs" isOpen={isOpen} onClose={onToggle} placement="right">
       <DrawerOverlay />
       <DrawerContent p={0}>
         <DrawerHeader p={0}>
