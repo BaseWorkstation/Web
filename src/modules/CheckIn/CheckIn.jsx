@@ -15,6 +15,7 @@ export default function CheckIn() {
     pin,
     setPin,
     handleSubmitPin,
+    showScanning,
     workspaceServices,
     handleSubmitService,
     isCheckingIn,
@@ -42,7 +43,10 @@ export default function CheckIn() {
               pb={6}
             >
               {stage === "SCAN_QR" && (
-                <ScanQR handleScanResult={handleScanResult} />
+                <ScanQR
+                  handleScanResult={handleScanResult}
+                  showScanning={showScanning}
+                />
               )}
 
               {stage === "CONFIRM_PIN" && (

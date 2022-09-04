@@ -9,6 +9,7 @@ import { toastError, toastSuccess } from "utils/helpers";
 export default function useCheckInHook() {
   const [stage, setStage] = useState("SCAN_QR");
   const [pin, setPin] = useState("");
+  const [showScanning, setShowScanning] = useState(false);
   const [workspace, setWorkspace] = useState(null);
   const { spaceServices: workspaceServices, loading } = useSelector(
     (state) => state.spaces
@@ -38,13 +39,30 @@ export default function useCheckInHook() {
     dispatch(fetchSpaceServices({ workstation_id: workspace.id }));
   };
 
-  const handleScanResult = (result, error) => {
+  const showScanningIndicator = () => {
+    setShowScanning(true);
+    setTimeout(() => {
+      setStage("CONFIRM_PIN");
+      // setShowScanning("scanned");
+    }, 1500);
+  };
+
+  const handleScanResult = (result, error, toDelay) => {
     if (!!result) {
       const workspace = getWorkspaceDetailsFromUrl(result?.text);
 
       if (workspace) {
         setWorkspace(workspace);
         fetchWorkspaceServices(workspace);
+
+        if (
+          toDelay
+          // && showScanning !== "scanned"
+        ) {
+          showScanningIndicator();
+          return;
+        }
+
         setStage("CONFIRM_PIN");
       }
     }
@@ -113,6 +131,7 @@ export default function useCheckInHook() {
     pin,
     setPin,
     handleSubmitPin,
+    showScanning,
     workspaceServices,
     handleSubmitService,
     isCheckingIn: loading === "CHECK_IN_TO_SPACE",
