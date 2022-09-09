@@ -53,7 +53,10 @@ export default function ChooseService({
                     w="full"
                     h={91}
                     rounded={8}
-                    src={images?.[0]?.file_path || "/images/spaceholder.png"}
+                    src={
+                      [...(images ?? [])]?.reverse()?.[0]?.file_path ||
+                      "/images/spaceholder.png"
+                    }
                   />
                   <Box pl={2} pb={2}>
                     <Text
