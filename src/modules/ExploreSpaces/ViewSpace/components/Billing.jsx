@@ -14,12 +14,12 @@ export default function BillingRate({ rate }) {
         <Icon as={AiOutlineClockCircle} color="primary.500" fontSize={21} />
         <Stack spacing={[1, 1, 0]}>
           <Text fontWeight={["bold", "bold", 500]}>
-            Minute Charge: N{separateWithComma(price_per_minute?.amount)}
+            Minute Charge: ₦{separateWithComma(price_per_minute?.amount)}
             /min.
           </Text>
           {price_per_minute?.min_amount && (
             <Text color="gray.600" fontSize={["xs", "xs", "sm"]}>
-              Minimum charge N{separateWithComma(price_per_minute?.min_amount)}
+              Minimum charge ₦{separateWithComma(price_per_minute?.min_amount)}
             </Text>
           )}
         </Stack>
@@ -30,12 +30,12 @@ export default function BillingRate({ rate }) {
           <Icon as={AiOutlineClockCircle} color="primary.500" fontSize={21} />
           <Stack spacing={[1, 1, 0]}>
             <Text fontWeight={["bold", "bold", 500]}>
-              Hourly Charge: N{separateWithComma(price_per_hour?.amount)}
+              Hourly Charge: ₦{separateWithComma(price_per_hour?.amount)}
               /hr.
             </Text>
             {price_per_hour?.min_amount && (
               <Text color="gray.600" fontSize={["xs", "xs", "sm"]}>
-                Minimum charge N{separateWithComma(price_per_hour?.min_amount)}
+                Minimum charge ₦{separateWithComma(price_per_hour?.min_amount)}
               </Text>
             )}
           </Stack>

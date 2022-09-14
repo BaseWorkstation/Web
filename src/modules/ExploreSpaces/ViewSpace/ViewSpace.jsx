@@ -107,12 +107,12 @@ export default function ViewSpace() {
               w="full"
               justify="center"
             >
-              <Text fontSize={30} fontWeight={500} pb={3} textAlign="center">
-                Already at <br /> a workspace?
+              <Text fontSize="md" fontWeight={500} pb={0} textAlign="center">
+                Already at {currentSpace.name}?
               </Text>
               <Flex w="fit-content">
                 <Link href="/check-in">
-                  <Button w={250} h={57} colorScheme="primary">
+                  <Button w={150} h={47} colorScheme="primary">
                     Check In
                   </Button>
                 </Link>

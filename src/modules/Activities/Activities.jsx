@@ -2,6 +2,7 @@ import {
   Flex,
   HStack,
   Icon,
+  Input,
   Menu,
   MenuButton,
   MenuList,
@@ -26,8 +27,9 @@ import useActivitiesHook from "./useActivitiesHook";
 
 export default function AccountActivities() {
   const {
-    selectedDay,
-    setSelectedDay,
+    currentMonth,
+    selectedMonth,
+    setSelectedMonth,
     teamLoading,
     team,
     isTeamOwner,
@@ -59,39 +61,15 @@ export default function AccountActivities() {
               top={[73, 4]}
               left={[0, "auto"]}
             >
-              <Menu isLazy placement="bottom-end" gutter={4}>
-                {({ onClose }) => (
-                  <>
-                    <MenuButton as={HStack} cursor="pointer">
-                      <HStack>
-                        <Icon
-                          color="primary.500"
-                          size="sm"
-                          variant="default"
-                          as={AiOutlineCalendar}
-                          fontSize="lg"
-                        />
-                        <Text fontWeight={500} fontSize="sm">
-                          <Moment format="MMMM D, YYYY ">{selectedDay}</Moment>
-                        </Text>
-                      </HStack>
-                    </MenuButton>
-                    <MenuList p={4}>
-                      <DayPicker
-                        onDayClick={(day) => {
-                          setSelectedDay(day);
-                          onClose();
-                        }}
-                        selectedDays={selectedDay}
-                        formatDate={formatDate}
-                        parseDate={parseDate}
-                        disabledDays={{ after: new Date() }}
-                        hideOnDayClick={true}
-                      />
-                    </MenuList>
-                  </>
-                )}
-              </Menu>
+              <HStack>
+                <Input
+                  variant={["flushed", "filled"]}
+                  type="month"
+                  max={currentMonth}
+                  value={selectedMonth}
+                  onChange={(event) => setSelectedMonth(event.target.value)}
+                />
+              </HStack>
             </Flex>
             <Tab
               rounded={8}

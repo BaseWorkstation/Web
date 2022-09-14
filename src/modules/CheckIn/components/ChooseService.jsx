@@ -68,7 +68,7 @@ export default function ChooseService({
                       {name}
                     </Text>
                     <Text fontSize="md">
-                      N{separateWithComma(price_per_minute?.amount)}/min
+                      ₦{separateWithComma(price_per_minute?.amount)}/min
                     </Text>
                   </Box>
                 </Box>

@@ -105,7 +105,7 @@ export default function SubscriptionPlans({ currentPlanId, onSelect }) {
                 {name}
               </Heading>
               <Text fontSize="xl" color="gray.400">
-                N{kConvert(price_per_month)} p/month
+                ₦{kConvert(price_per_month)} p/month
               </Text>
             </Stack>
             <Stack spacing={6} p={6} pt={4}>

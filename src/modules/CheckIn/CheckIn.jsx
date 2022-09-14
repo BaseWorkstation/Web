@@ -24,9 +24,9 @@ export default function CheckIn() {
   } = useCheckInHook();
 
   return (
-    <Center bg="gray.50" minH="100vh" py={[16, 20]}>
-      <VStack w="full" spacing={16}>
-        <Logo />
+    <Center bg="gray.50" minH="100vh" pt={[6, 12]} pb={[16, 20]}>
+      <VStack w="full" spacing={6}>
+        <Logo maxW={81} />
 
         <VStack>
           <HowItWorks />

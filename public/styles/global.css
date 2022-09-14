@@ -25,6 +25,7 @@
 body {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  font-size: 14px;
 }
 /* ::-webkit-scrollbar {
   width: 0px;

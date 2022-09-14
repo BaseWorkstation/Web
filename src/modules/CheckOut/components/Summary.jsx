@@ -69,11 +69,11 @@ export default function Summary({
               </Text>
               <Text fontWeight={500}>
                 {" "}
-                N
+                ₦
                 {separateWithComma(
                   checkoutDetails?.total_value_of_minutes_spent_in_naira
                 )}{" "}
-                (N
+                (₦
                 {separateWithComma(
                   checkoutDetails?.space_price_per_minute_at_the_time
                 )}

@@ -1,3 +1,4 @@
+import moment from "moment";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchTeamActivities, fetchTeam } from "redux/slices/teamSlice";
@@ -5,7 +6,8 @@ import { fetchUserActivities } from "redux/slices/userSlice";
 import { formatDateToYYYYMMDD } from "utils/helpers";
 
 export default function useActivitiesHook() {
-  const [selectedDay, setSelectedDay] = useState(new Date());
+  const currentMonth = moment().format("yyyy-MM");
+  const [selectedMonth, setSelectedMonth] = useState(currentMonth);
   const {
     userDetails,
     userActivities,
@@ -27,28 +29,29 @@ export default function useActivitiesHook() {
   useEffect(() => {
     dispatch(
       fetchUserActivities({
-        from_date: formatDateToYYYYMMDD(selectedDay),
-        to_date: formatDateToYYYYMMDD(selectedDay),
+        from_date: `${selectedMonth}-01`,
+        to_date: `${selectedMonth}-${moment(selectedMonth).daysInMonth()}`,
         user_id: userDetails.id,
       })
     );
-  }, [selectedDay]);
+  }, [selectedMonth]);
 
   useEffect(() => {
     if (team) {
       dispatch(
         fetchTeamActivities({
-          from_date: formatDateToYYYYMMDD(selectedDay),
-          to_date: formatDateToYYYYMMDD(selectedDay),
+          from_date: `${selectedMonth}-01`,
+          to_date: `${selectedMonth}-${moment(selectedMonth).daysInMonth()}`,
           team_id: team.id,
         })
       );
     }
-  }, [!!team, selectedDay]);
+  }, [!!team, selectedMonth]);
 
   return {
-    selectedDay,
-    setSelectedDay,
+    currentMonth,
+    selectedMonth,
+    setSelectedMonth,
     teamLoading:
       loading === "FETCH_TEAM" || loading === "FETCH_TEAM_ACTIVITIES",
     team,

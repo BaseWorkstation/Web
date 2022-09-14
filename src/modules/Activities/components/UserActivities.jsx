@@ -49,6 +49,9 @@ export default function UserActivities({ userActivities, userLoading }) {
               <Th textTransform="capitalize" fontSize="md" color="primary.500">
                 Check Out
               </Th>
+              <Th textTransform="capitalize" fontSize="md" color="primary.500">
+                Time spent
+              </Th>
               <Th
                 textTransform="capitalize"
                 fontSize="md"
@@ -67,6 +70,7 @@ export default function UserActivities({ userActivities, userLoading }) {
                 check_in_time,
                 check_out_time,
                 total_value_of_minutes_spent_in_naira,
+                total_minutes_spent,
               }) => (
                 <Tr key={id}>
                   <Td textTransform="capitalize" py={8}>
@@ -74,8 +78,8 @@ export default function UserActivities({ userActivities, userLoading }) {
                   </Td>
                   <Td py={8}>
                     {check_in_time ? (
-                      <Moment format="hh:mm a">
-                        {new Date(check_in_time)}
+                      <Moment format="DD MMM YYYY, hh:mm a">
+                        {new Date(check_in_time.split(" ").join("T"))}
                       </Moment>
                     ) : (
                       ""
@@ -83,15 +87,16 @@ export default function UserActivities({ userActivities, userLoading }) {
                   </Td>
                   <Td py={8}>
                     {check_out_time ? (
-                      <Moment format="hh:mm a">
-                        {new Date(check_out_time)}
+                      <Moment format="DD MMM YYYY, hh:mm a">
+                        {new Date(check_out_time.split(" ").join("T"))}
                       </Moment>
                     ) : (
-                      ""
+                      <Text color="gray">Still checked in</Text>
                     )}
                   </Td>
+                  <Td py={8}>{total_minutes_spent} minutes</Td>
                   <Td py={8} isNumeric>
-                    N{separateWithComma(total_value_of_minutes_spent_in_naira)}
+                    ₦{separateWithComma(total_value_of_minutes_spent_in_naira)}
                   </Td>
                 </Tr>
               )
@@ -104,7 +109,7 @@ export default function UserActivities({ userActivities, userLoading }) {
           TOTAL SPENT
         </Text>
         <Text fontWeight="bold" color="primary.500" fontSize="lg">
-          N{separateWithComma(totalAmount)}
+          ₦{separateWithComma(totalAmount)}
         </Text>
       </HStack>
     </Box>
