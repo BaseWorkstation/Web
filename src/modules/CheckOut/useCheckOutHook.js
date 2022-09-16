@@ -37,7 +37,7 @@ export default function useCheckOutHook() {
   const config = {
     reference,
     email: userDetails?.email,
-    amount: amount * 100,
+    amount: (amount || 1) * 100,
     publicKey: process.env.NEXT_PUBLIC_PAYSTACK_PUBLIC_KEY,
     firstname: userDetails?.first_name,
     lastname: userDetails?.last_name,
