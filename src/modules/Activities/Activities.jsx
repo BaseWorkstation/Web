@@ -58,7 +58,7 @@ export default function AccountActivities() {
             <Flex
               pos="absolute"
               right={[0, 0, 10]}
-              top={[43, 4]}
+              top={[50, 4]}
               left={[0, "auto"]}
             >
               <HStack>
@@ -74,7 +74,7 @@ export default function AccountActivities() {
             <Tab
               rounded={8}
               color="gray.500"
-              fontSize={["md", "md", "lg"]}
+              fontSize={["sm", "md", "lg"]}
               px={[3, 8]}
               _selected={{ bg: "rgba(0, 171, 231, 0.15);", color: "blue.800" }}
             >
@@ -84,7 +84,7 @@ export default function AccountActivities() {
               <Tab
                 rounded={8}
                 color="gray.500"
-                fontSize={["md", "md", "lg"]}
+                fontSize={["sm", "md", "lg"]}
                 px={[3, 8]}
                 _selected={{
                   bg: "rgba(0, 171, 231, 0.15);",
