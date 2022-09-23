@@ -1,21 +1,25 @@
 import {
   Box,
   Button,
+  Center,
+  HStack,
   Icon,
   Image,
   Table,
   TableContainer,
   Tbody,
   Td,
-  Text,
   Th,
-  Thead,
   Tr,
+  Thead,
+  Text,
   VStack,
 } from "@chakra-ui/react";
 import Spinner from "components/Spinner/Spinner";
 import Link from "next/link";
 import { AiOutlineDelete } from "react-icons/ai";
+import { GrCircleInformation } from "react-icons/gr";
+import { IoMdInformationCircleOutline } from "react-icons/io";
 import DeleteMemberModal from "./DeleteMemberModal";
 
 export default function MembersTable({
@@ -76,7 +80,9 @@ export default function MembersTable({
                   {member.first_name} {member.last_name}
                 </Td>
                 <Td py={8}>{member.email}</Td>
-                <Td py={8}>{member.last_active}</Td>
+                <Td py={8}>
+                  {member.verified_at ? member.last_active : "Pending Invite"}
+                </Td>
                 {isTeamOwner && (
                   <Td py={8}>
                     <Button
@@ -96,7 +102,20 @@ export default function MembersTable({
             ))}
             {teamMembers.unregistered_members.map((member) => (
               <Tr key={member.id}>
-                <Td textTransform="capitalize" py={8} pl={0}></Td>
+                <Td textTransform="initial" py={8} pl={0}>
+                  <HStack spacing={4} shadow="md" rounded={8}>
+                    <Center w={50} h={70} bg="blue.500" roundedLeft={8}>
+                      <Icon
+                        color="white"
+                        fontSize={28}
+                        as={IoMdInformationCircleOutline}
+                      />
+                    </Center>
+                    <Text color="gray.500">
+                      This user is yet to <br /> join base
+                    </Text>
+                  </HStack>
+                </Td>
                 <Td py={8}>{member.email}</Td>
                 <Td py={8}>Pending Invite</Td>
                 <Td py={8}>

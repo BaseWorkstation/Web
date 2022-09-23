@@ -58,7 +58,7 @@ export default function AccountActivities() {
             <Flex
               pos="absolute"
               right={[0, 0, 10]}
-              top={[50, 4]}
+              top={[63, 4]}
               left={[0, "auto"]}
             >
               <HStack>

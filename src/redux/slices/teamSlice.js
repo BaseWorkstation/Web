@@ -22,6 +22,25 @@ export const fetchTeam = createAsyncThunk(
   }
 );
 
+export const fetchTeamById = createAsyncThunk(
+  "teams/fetchTeamById",
+  async (teamId, thunkAPI) => {
+    try {
+      const {
+        data: { data },
+      } = await Axios.get(`${BASE_API_URL}/teams/${teamId}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("base_acccess_token")}`,
+        },
+      });
+      return data;
+    } catch ({ response }) {
+      console.log(response);
+      return thunkAPI.rejectWithValue(response);
+    }
+  }
+);
+
 export const fetchTeamActivities = createAsyncThunk(
   "teams/fetchTeamActivities",
   async (fetchPayload, thunkAPI) => {
