@@ -18,14 +18,14 @@ export default function useViewTeamHook() {
   const [memberDetails, setMemberDetails] = useState(initialMemberDetails);
   const [memberToRemove, setMemberToRemove] = useState(null);
   const [teamInvitations, setTeamInvitations] = useState([]);
+  const [joinedTeams, setJoinedTeams] = useState([]);
   const { team, teamMembers, loading } = useSelector((state) => state.teams);
   const { userDetails } = useSelector((state) => state.user);
   const addMemberModalState = useDisclosure();
   const deleteMemberModalState = useDisclosure();
   const dispatch = useDispatch();
 
-  const currentTeamId =
-    userDetails?.owned_teams[0] || userDetails?.joined_teams[0];
+  const currentTeamId = userDetails?.owned_teams[0];
   const isTeamOwner = !!userDetails?.owned_teams[0];
   const hasJoinedTeam = !!userDetails?.joined_teams[0];
   const hasInvitations = !!userDetails?.pending_team_invites[0];
@@ -33,6 +33,24 @@ export default function useViewTeamHook() {
   useEffect(() => {
     if (!team) {
       dispatch(fetchTeam({ id: currentTeamId }));
+    }
+  }, []);
+
+  useEffect(() => {
+    const fetchJoinedTeams = async () => {
+      try {
+        const teamsDetails = await Promise.all(
+          userDetails?.joined_teams.map((teamId) => {
+            return dispatch(fetchTeamById(teamId)).unwrap();
+          })
+        );
+
+        setJoinedTeams(teamsDetails);
+      } catch (error) {}
+    };
+
+    if (hasJoinedTeam) {
+      fetchJoinedTeams();
     }
   }, []);
 
@@ -131,6 +149,7 @@ export default function useViewTeamHook() {
     currentTeam: team,
     isTeamOwner,
     hasJoinedTeam,
+    joinedTeams,
     hasInvitations,
     teamInvitations,
     teamMembers,

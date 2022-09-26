@@ -17,11 +17,11 @@ import React from "react";
 import { BsCheckLg } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 
-export default function TeamInvites({ inviteeTeams }) {
+export default function JoinedTeams({ joinedTeams, inviteeTeams }) {
   return (
     <Box>
       <HStack justify="space-between" color="blue.800">
-        <Heading fontSize="xl">View Team Invitations</Heading>
+        <Heading fontSize="xl">View Joined Teams</Heading>
       </HStack>
 
       <Box pt={8}>
@@ -48,6 +48,23 @@ export default function TeamInvites({ inviteeTeams }) {
               </Tr>
             </Thead>
             <Tbody>
+              {joinedTeams.map((team) => (
+                <Tr key={team.id}>
+                  <Td textTransform="capitalize" py={4} pl={0}>
+                    <HStack spacing={4}>
+                      <Avatar
+                        size="sm"
+                        name={team.name}
+                        src={team.logo?.file_path}
+                      />
+                      <Text fontWeight="bold">{team.name}</Text>
+                    </HStack>
+                  </Td>
+                  <Td py={4}>
+                    <Text color="green.500">Joined</Text>
+                  </Td>
+                </Tr>
+              ))}
               {inviteeTeams.map((team) => (
                 <Tr key={team.id}>
                   <Td textTransform="capitalize" py={4} pl={0}>

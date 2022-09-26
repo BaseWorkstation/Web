@@ -12,7 +12,7 @@ import {
 import AccountLayout from "layout/AccountLayout/AccountLayout";
 import AddMember from "./components/AddMember";
 import MembersTable from "./components/MembersTable";
-import TeamInvites from "./components/TeamInvites";
+import JoinedTeams from "./components/JoinedTeams";
 import useViewTeamHook from "./useViewTeamHook";
 
 export default function ViewTeam() {
@@ -61,7 +61,7 @@ export default function ViewTeam() {
                 My Joined Team
               </Tab>
             )}
-            {data.hasInvitations && (
+            {(data.hasInvitations || data.hasJoinedTeam) && (
               <Tab
                 rounded={8}
                 color="gray.500"
@@ -72,7 +72,7 @@ export default function ViewTeam() {
                   color: "blue.800",
                 }}
               >
-                My Invitations
+                Joined Teams
               </Tab>
             )}
           </TabList>
@@ -106,9 +106,12 @@ export default function ViewTeam() {
                 <Box pt={8}></Box>
               </TabPanel>
             )}
-            {data.hasInvitations && (
+            {(data.hasInvitations || data.hasJoinedTeam) && (
               <TabPanel px={0} pt={[50, 8]}>
-                <TeamInvites inviteeTeams={data.teamInvitations} />
+                <JoinedTeams
+                  joinedTeams={data.joinedTeams}
+                  inviteeTeams={data.teamInvitations}
+                />
               </TabPanel>
             )}
           </TabPanels>
