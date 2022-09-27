@@ -1,4 +1,5 @@
 import { useDisclosure } from "@chakra-ui/react";
+import Router from "next/router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,6 +8,7 @@ import {
   fetchTeamMembers,
   fetchTeam,
   fetchTeamById,
+  acceptTeamInvite,
 } from "redux/slices/teamSlice";
 import { toastError, toastSuccess } from "utils/helpers";
 
@@ -114,6 +116,21 @@ export default function useViewTeamHook() {
     }
   };
 
+  const handleJoinTeam = async (teamId) => {
+    try {
+      await dispatch(
+        acceptTeamInvite({
+          team_id: teamId,
+        })
+      ).unwrap();
+
+      Router.reload();
+    } catch (error) {
+      console.log(error);
+      toastError(null, error);
+    }
+  };
+
   const openDeleteMemberConfirmation = (memberId) => {
     setMemberToRemove(memberId);
     deleteMemberModalState.onOpen();
@@ -146,8 +163,10 @@ export default function useViewTeamHook() {
     teamLoading: loading === "FETCH_TEAM" || loading === "FETCH_TEAM_MEMBERS",
     isAddingMember: loading === "ADD_TEAM_MEMBER",
     isDeletingMember: loading === "DELETE_TEAM_MEMBER",
+    isJoiningTeam: loading === "ACCEPT_TEAM_INVITE",
     currentTeam: team,
     isTeamOwner,
+    handleJoinTeam,
     hasJoinedTeam,
     joinedTeams,
     hasInvitations,

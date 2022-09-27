@@ -141,6 +141,29 @@ export const addMemberToTeam = createAsyncThunk(
   }
 );
 
+export const acceptTeamInvite = createAsyncThunk(
+  "teams/acceptTeamInvite",
+  async (acceptPayload, thunkAPI) => {
+    try {
+      const { data } = await Axios.post(
+        `${BASE_API_URL}/teams/members/`,
+        acceptPayload,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem(
+              "base_acccess_token"
+            )}`,
+          },
+        }
+      );
+      return data;
+    } catch ({ response }) {
+      console.log(response);
+      return thunkAPI.rejectWithValue(response);
+    }
+  }
+);
+
 export const editTeam = createAsyncThunk(
   "teams/editTeam",
   async (editPayload, thunkAPI) => {
@@ -328,6 +351,23 @@ const teamSlice = createSlice({
     [addMemberToTeam.rejected]: (state, { payload }) => {
       state.error = {
         errorType: "ADD_TEAM_MEMBER",
+      };
+      delete state.loading;
+    },
+
+    [acceptTeamInvite.pending]: (state) => {
+      delete state.error;
+      delete state.success;
+      state.loading = "ACCEPT_TEAM_INVITE";
+    },
+    [acceptTeamInvite.fulfilled]: (state, action) => {
+      state.success = "ACCEPT_TEAM_INVITE";
+      delete state.loading;
+      delete state.error;
+    },
+    [acceptTeamInvite.rejected]: (state, { payload }) => {
+      state.error = {
+        errorType: "ACCEPT_TEAM_INVITE",
       };
       delete state.loading;
     },

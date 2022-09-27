@@ -94,7 +94,7 @@ export default function ViewTeam() {
                 <MembersTable {...data} />
               </Box>
             </TabPanel>
-            {data.hasJoinedTeam && (
+            {/* {data.hasJoinedTeam && (
               <TabPanel px={0} pt={[50, 8]}>
                 <HStack justify="space-between" color="blue.800">
                   <Heading fontSize="xl">
@@ -105,10 +105,12 @@ export default function ViewTeam() {
 
                 <Box pt={8}></Box>
               </TabPanel>
-            )}
+            )} */}
             {(data.hasInvitations || data.hasJoinedTeam) && (
               <TabPanel px={0} pt={[50, 8]}>
                 <JoinedTeams
+                  handleJoinTeam={data.handleJoinTeam}
+                  isJoiningTeam={data.isJoiningTeam}
                   joinedTeams={data.joinedTeams}
                   inviteeTeams={data.teamInvitations}
                 />

@@ -17,7 +17,12 @@ import React from "react";
 import { BsCheckLg } from "react-icons/bs";
 import { IoClose } from "react-icons/io5";
 
-export default function JoinedTeams({ joinedTeams, inviteeTeams }) {
+export default function JoinedTeams({
+  handleJoinTeam,
+  isJoiningTeam,
+  joinedTeams,
+  inviteeTeams,
+}) {
   return (
     <Box>
       <HStack justify="space-between" color="blue.800">
@@ -85,6 +90,8 @@ export default function JoinedTeams({ joinedTeams, inviteeTeams }) {
                         color="green.500"
                         variant="ghost"
                         iconSpacing={2}
+                        isLoading={isJoiningTeam}
+                        onClick={() => handleJoinTeam(team.id)}
                         leftIcon={<BsCheckLg />}
                       >
                         Accept
