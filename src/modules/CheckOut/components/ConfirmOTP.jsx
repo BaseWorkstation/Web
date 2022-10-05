@@ -36,12 +36,13 @@ export default function ConfirmOTP({
       </Stack>
       <VStack as="form" onSubmit={onSubmitOTP} pt={8} px={4}>
         <VStack>
-          <Text fontSize="xl" fontWeight={700}>
-            Enter OTP
+          <Text fontSize="xl" textAlign="center" fontWeight={700}>
+            Enter the OTP that was sent to your receptionist
           </Text>
           <Text textAlign="center" color="blue.800">
-            An OTP has been sent to {checkoutDetails?.workstation?.name}. Enter
-            the otp to allow you check out
+            An OTP has been sent to the receptionist at{" "}
+            {checkoutDetails?.workstation?.name}. Enter the otp to allow you
+            check out
           </Text>
         </VStack>
 
