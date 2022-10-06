@@ -37,7 +37,7 @@ export default function ConfirmOTP({
       <VStack as="form" onSubmit={onSubmitOTP} pt={8} px={4}>
         <VStack>
           <Text fontSize="xl" textAlign="center" fontWeight={700}>
-            Enter the OTP that was sent to your receptionist
+            Enter the OTP that was sent to the receptionist
           </Text>
           <Text textAlign="center" color="blue.800">
             An OTP has been sent to the receptionist at{" "}
