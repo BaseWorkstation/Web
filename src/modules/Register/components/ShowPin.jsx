@@ -37,7 +37,7 @@ export default function ShowPin({ basePin }) {
           </Heading>
           <Text fontSize={[16, 18]} textAlign="center">
             This is your base pin, you'll use this anytime you are checking in
-            to a base.
+            to a workspace.
           </Text>
         </VStack>
         <Box w="full" pt={9}>
