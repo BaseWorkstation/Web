@@ -78,7 +78,7 @@ export default function SpaceCard({ space }) {
             <Text textTransform="capitalize" fontWeight={500}>
               {city}, {state}
             </Text>
-            <HStack spacing={1} align="flex-start">
+            {/* <HStack spacing={1} align="flex-start">
               <Icon mt={0.5} color="green.400" as={FiArrowUpRight} />
               <Text fontWeight={500} fontSize={["xs", "xs", "sm"]}>
                 <Box as="span" color="green.400">
@@ -86,7 +86,7 @@ export default function SpaceCard({ space }) {
                 </Box>{" "}
                 cheaper with base
               </Text>
-            </HStack>
+            </HStack> */}
           </Stack>
         </Stack>
       </HStack>
